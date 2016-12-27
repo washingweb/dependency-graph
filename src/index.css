@@ -14,7 +14,7 @@ html, body {
     flex-direction: row;
 }
 
-textarea {
+textarea#doc {
     height : 100%;
     flex : 0 0 200px;
 }
@@ -23,4 +23,13 @@ svg {
     height : 100%;
     flex : 2;
     background-color : red;
+}
+
+textarea#message {
+    position: fixed;
+    bottom: 10px;
+    left : 10px;
+    width : 500px;
+    height : 200px;
+    background-color : yellowgreen;
 }
