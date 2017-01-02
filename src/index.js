@@ -21,9 +21,12 @@ const app = new Vue({
       });
     },
     serialized : function() {
-      const obj = JSON.parse(this.serialized);
-      this.dependencies = obj.dependencies;
-      this.properties   = obj.properties;
+      console.log("load data");
+      try {
+        const obj = JSON.parse(this.serialized);
+        this.dependencies = obj.dependencies;
+        this.properties   = obj.properties;
+      } catch(e) {}
     }
   },
   data: {
