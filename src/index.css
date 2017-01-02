@@ -27,8 +27,16 @@ div#deps {
 }
 
 div#props {
-    flex : 200px 0 0;
+    flex : 100px 0 0;
     border-top: 1px black solid;
+}
+
+div#serialized {
+    flex : 20px 0 0;
+}
+
+div#serialized input {
+    width : 100%;
 }
 
 textarea#dot {
@@ -41,6 +49,11 @@ div#output {
     flex : 2;
     background-color : white;
     border : solid 1px black;
+}
+
+div#name-selected {
+    padding : 5px;
+    background-color : #eeeeee;
 }
 
 textarea#message {

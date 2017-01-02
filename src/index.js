@@ -15,12 +15,19 @@ const app = new Vue({
   watch : {
     dot : function() {
       this.updateDot();
+      this.serialized = JSON.stringify({
+        dependencies : this.dependencies,
+        properties   : this.properties,
+      });
     },
-    properties : function() {
-      this.updateDot();
+    serialized : function() {
+      const obj = JSON.parse(this.serialized);
+      this.dependencies = obj.dependencies;
+      this.properties   = obj.properties;
     }
   },
   data: {
+    serialized : "",
     nameSelected : "",
     dependencies : [{
       left  : "",

@@ -23,7 +23,7 @@
                     <button v-on:click="addDep">+</button>
                 </div>
                 <div id="props">
-                    <span>{{ nameSelected }}</span>
+                    <div id="name-selected">{{ nameSelected }}</div>
                     <table>
                         <tbody>
                             <tr v-for="prop in propertiesSelected">
@@ -32,6 +32,9 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
+                <div id="serialized">
+                    <input v-model="serialized"></input>
                 </div>
             </div>
             <!--<textarea id="dot" v-model="dot"></textarea>-->
