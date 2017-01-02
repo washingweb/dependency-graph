@@ -11,6 +11,21 @@ const app = new Vue({
       const result = this.properties[this.nameSelected] || [];
       return result;
     },
+    filter : function() {
+        const filter = this.filterString;
+        const parts  = filter.split(/\S+/);
+        const cmd    = parts[0];
+        const name   = parts[1];
+        return {
+          cmd,
+          name,
+        };
+    },
+    dependenciesFilterred : function() {
+      const cmd = this.filter.cmd;
+      const name = this.filter.name;
+
+    },
   },
   watch : {
     dot : function() {
@@ -27,10 +42,11 @@ const app = new Vue({
         this.dependencies = obj.dependencies;
         this.properties   = obj.properties;
       } catch(e) {}
-    }
+    },
   },
   data: {
-    serialized : "",
+    filterString : "",
+    serialized   : "",
     nameSelected : "",
     dependencies : [{
       left  : "",

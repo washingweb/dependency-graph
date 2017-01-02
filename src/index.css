@@ -21,6 +21,10 @@ div#spec {
     flex-direction: column;
 }
 
+input#filter {
+    width : 100%;
+}
+
 div#deps {
     flex : 1;
     overflow-y: auto;
