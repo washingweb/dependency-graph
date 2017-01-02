@@ -39,7 +39,8 @@ textarea#dot {
 div#output {
     height : 100%;
     flex : 2;
-    background-color : red;
+    background-color : white;
+    border : solid 1px black;
 }
 
 textarea#message {
