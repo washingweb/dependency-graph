@@ -14,12 +14,17 @@ html, body {
     flex-direction: row;
 }
 
-textarea#doc {
+div#spec {
     height : 100%;
     flex : 0 0 200px;
 }
 
-svg {
+textarea#dot {
+    height : 100%;
+    flex : 0 0 200px;
+}
+
+div#output {
     height : 100%;
     flex : 2;
     background-color : red;

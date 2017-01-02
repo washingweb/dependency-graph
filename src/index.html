@@ -9,11 +9,23 @@
     </head>
     <body>
         <div id="app">
-            <textarea id="doc" v-model="doc"></textarea>
-            <svg viewBox="0 0 100 100">
-            </svg>
-            <textarea id="message" v-model="message"></textarea>
+            <div id="spec">
+                <table>
+                    <tbody>
+                        <tr v-for="(dep, index) in dependencies">
+                            <td><input v-model="dep.left"></input></td>
+                            <td><input v-model="dep.right"></input></td>
+                            <td><button v-on:click="delDep(index)">X</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button v-on:click="addDep">+</button>
+            </div>
+            <textarea id="dot" v-model="dot"></textarea>
+            <div id="output"></div>
         </div>
+        <script src="viz.js"></script>
+        <script src="dot.js"></script>
         <script src="index.js"></script>
     </body>
 </html>
