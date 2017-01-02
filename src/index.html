@@ -10,16 +10,29 @@
     <body>
         <div id="app">
             <div id="spec">
-                <table>
-                    <tbody>
-                        <tr v-for="(dep, index) in dependencies">
-                            <td><input v-model="dep.left"></input></td>
-                            <td><input v-model="dep.right"></input></td>
-                            <td><button v-on:click="delDep(index)">X</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <button v-on:click="addDep">+</button>
+                <div id="deps">
+                    <table>
+                        <tbody>
+                            <tr v-for="(dep, index) in dependencies">
+                                <td><input v-model="dep.left" v-on:focus="focus(dep.left)" v-on:keyup="edit(dep.left)"></input></td>
+                                <td><input v-model="dep.right" v-on:focus="focus(dep.right)" v-on:keyup="edit(dep.right)"></input></td>
+                                <td><button v-on:click="delDep(index)">X</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button v-on:click="addDep">+</button>
+                </div>
+                <div id="props">
+                    <span>{{ nameSelected }}</span>
+                    <table>
+                        <tbody>
+                            <tr v-for="prop in propertiesSelected">
+                                <td>{{ prop.name }}</td>
+                                <td><input v-model="prop.value"></input></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <textarea id="dot" v-model="dot"></textarea>
             <div id="output"></div>
@@ -28,6 +41,7 @@
         <script src="dot.js"></script>
         <script src="svg-pan-zoom.min.js"></script>
         <script src="jquery-3.1.1.min.js"></script>
+        <script src="lodash.min.js"></script>
         <script src="index.js"></script>
     </body>
 </html>

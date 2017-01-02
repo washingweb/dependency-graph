@@ -17,6 +17,18 @@ html, body {
 div#spec {
     height : 100%;
     flex : 0 0 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+div#deps {
+    flex : 1;
+    overflow-y: auto;
+}
+
+div#props {
+    flex : 200px 0 0;
+    border-top: 1px black solid;
 }
 
 textarea#dot {

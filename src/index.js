@@ -5,26 +5,47 @@ const app = new Vue({
   el: '#app',
   computed : {
     dot : function() {
-      console.log('compute dot');
-      return toDot(this.dependencies.filter(d => d.left != "" && d.right != ""), {});
-    }
+      return toDot(this.dependencies.filter(d => d.left != "" && d.right != ""), this.properties);
+    },
+    propertiesSelected : function() {
+      const result = this.properties[this.nameSelected] || [];
+      return result;
+    },
   },
   watch : {
     dot : function() {
+      this.updateDot();
+    },
+    properties : function() {
+      this.updateDot();
+    }
+  },
+  data: {
+    nameSelected : "",
+    dependencies : [{
+      left  : "",
+      right : "",
+    }],
+    properties : {},
+    zoomLevel : undefined,
+    panPoint  : undefined,
+  },
+  methods : {
+    updateDot : function() {
       const result = Viz(this.dot, { format: "svg",  engine : "dot", });
       const parser = new DOMParser();
       const doc = parser.parseFromString(result, "image/svg+xml");
       const graph = document.querySelector("#output");
-      
+
       if (zoomTiger != undefined) {
         zoomTiger.destroy()
         delete zoomTiger;
       }
-      
+
       while (graph.hasChildNodes()) {
           graph.removeChild(graph.lastChild);
       }
-      
+
       graph.appendChild(doc.documentElement);
 
       // change size
@@ -46,17 +67,7 @@ const app = new Vue({
       zoomTiger.setOnPan((point) => {
         this.pan(point);
       })
-    }
-  },
-  data: {
-    dependencies : [{
-      left  : "",
-      right : "",
-    }],
-    zoomLevel : undefined,
-    panPoint  : undefined,
-  },
-  methods : {
+    },
     addDep : function() {
       this.dependencies.push({
         left  : "",
@@ -65,6 +76,22 @@ const app = new Vue({
     },
     delDep : function(index) {
       this.dependencies.splice(index, 1);
+    },
+    focus : function(name) {
+      this.nameSelected = name;
+      if (! (name in this.properties)) {
+        Vue.set(this.properties, name, [{
+          "name" : "分类",
+          "value" : "",
+        }]);
+      }
+    },
+    edit  : function(name) {
+      if (this.nameSelected in this.properties && name != this.nameSelected) {
+        Vue.set(this.properties, name, this.properties[this.nameSelected]);
+        Vue.delete(this.properties, this.nameSelected);
+      }
+      this.nameSelected = name;
     },
     zoom : function(zoomLevel) {
       this.zoomLevel = zoomLevel;
