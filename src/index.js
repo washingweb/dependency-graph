@@ -94,7 +94,7 @@ const app = new Vue({
       }
     },
     edit  : function(name) {
-      if (this.nameSelected in this.properties && name != this.nameSelected) {
+      if (!(name in this.properties) && this.nameSelected in this.properties && name != this.nameSelected) {
         Vue.set(this.properties, name, this.properties[this.nameSelected]);
         Vue.delete(this.properties, this.nameSelected);
       }
