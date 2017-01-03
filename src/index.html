@@ -15,8 +15,8 @@
                     <table>
                         <tbody>
                             <tr v-for="(dep, index) in dependencies">
-                                <td><input v-model="dep.left" v-on:focus="focus(dep.left)" v-on:keyup="edit(dep.left)"></input></td>
-                                <td><input v-model="dep.right" v-on:focus="focus(dep.right)" v-on:keyup="edit(dep.right)"></input></td>
+                                <td><input v-model="dep.left" readonly></input></td>
+                                <td><input v-model="dep.right" readonly></input></td>
                                 <td><button v-on:click="delDep(index)">X</button></td>
                             </tr>
                         </tbody>

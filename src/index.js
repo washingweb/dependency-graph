@@ -58,10 +58,7 @@ const app = new Vue({
     filterString : "",
     serialized   : "",
     nameSelected : "",
-    dependencies : [{
-      left  : "",
-      right : "",
-    }],
+    dependencies : [],
     properties : {},
     zoomLevel : undefined,
     panPoint  : undefined,
