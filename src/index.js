@@ -28,6 +28,9 @@ const app = new Vue({
     },
   },
   watch : {
+    nameSelected : function() {
+      this.updateDot();
+    },
     dot : function() {
       this.updateDot();
       this.serialized = JSON.stringify({
@@ -89,16 +92,44 @@ const app = new Vue({
       $(svg).addClass('full');
 
       const texts = $(svg).find("text");
-      console.log(texts[0].innerHTML);
 
       const that = this;
 
-      texts.on("click", function() {
-        const name = $(this)[0].innerHTML;
-        that.selectName(name);
+      texts.on("click", function(e) {
+        if (e.ctrlKey) {
+          if (!!that.nameSelected) {
+            const name = $(this)[0].innerHTML;
+
+            const dependenciesRest = that.dependencies.filter(d => d.left != that.nameSelected || d.right != name);
+
+            if (dependenciesRest.length != that.dependencies.length) {
+              that.dependencies = dependenciesRest;
+            } else {
+              that.dependencies.push({
+                left  : that.nameSelected,
+                right : name,
+              });
+            }
+          }
+        } else {
+          const name = $(this)[0].innerHTML;
+
+          if (name == that.nameSelected) {
+            that.selectName("");
+          }
+          else {
+            const name = $(this)[0].innerHTML;
+            that.selectName(name);
+          }
+        }
       });
 
       texts.css("cursor", "pointer");
+
+      if (!!this.nameSelected) {
+        const text = texts.filter(`:contains(${this.nameSelected})`);
+        text.parent().css("fill", "red");
+      }
 
       var zoomTiger = svgPanZoom(svg);
       if (this.zoomLevel != undefined) {
