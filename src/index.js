@@ -57,6 +57,16 @@ const app = new Vue({
     panPoint  : undefined,
   },
   methods : {
+
+    selectName : function(name) {
+      this.nameSelected = name;
+      if (! (name in this.properties)) {
+        Vue.set(this.properties, name, [{
+          "name" : "分类",
+          "value" : "",
+        }]);
+      }
+    },
     updateDot : function() {
       const result = Viz(this.dot, { format: "svg",  engine : "dot", });
       const parser = new DOMParser();
@@ -77,6 +87,18 @@ const app = new Vue({
       // change size
       const svg = graph.firstChild;
       $(svg).addClass('full');
+
+      const texts = $(svg).find("text");
+      console.log(texts[0].innerHTML);
+
+      const that = this;
+
+      texts.on("click", function() {
+        const name = $(this)[0].innerHTML;
+        that.selectName(name);
+      });
+
+      texts.css("cursor", "pointer");
 
       var zoomTiger = svgPanZoom(svg);
       if (this.zoomLevel != undefined) {
