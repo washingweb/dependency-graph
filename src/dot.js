@@ -30,6 +30,8 @@ function toDot(dependencies, properties) {
 
     deps = dependencies.map(d => `"${d.left}" -> "${d.right}";`).join('\n');
 
+    const nameDeclarations = names.map(n => `"${n}"`).join('\n');
+
     return `
 digraph {
 
@@ -38,6 +40,8 @@ node [shape=box];
 edge [color=blue];
 
 ${rankSpecs}
+
+${nameDeclarations}
 
 ${personSpecs}
 
