@@ -113,8 +113,8 @@ const app = new Vue({
       $(svg).addClass('full');
 
       $(svg).on("click", function(e) {
-        if (e.ctrlKey) {
-          Vue.set(that.properties, "**新节点**", [{
+        if (e.altKey) {
+          Vue.set(that.properties, "**未命名**", [{
             name : '分类',
             value : ''
           }]);
@@ -215,7 +215,7 @@ const app = new Vue({
 
 
 app.properties = {
-  "***未命名***" : [{
+  "**未命名**" : [{
     name  : "分类",
     value : "",
   }]
