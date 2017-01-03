@@ -127,7 +127,9 @@ const app = new Vue({
       texts.css("cursor", "pointer");
 
       if (!!this.nameSelected) {
-        const text = texts.filter(`:contains(${this.nameSelected})`);
+        const text = texts.filter(function() {
+          return $(this)[0].innerHTML == that.nameSelected;
+        });
         text.parent().css("fill", "red");
       }
 
