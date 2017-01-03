@@ -4,6 +4,12 @@ var zoomTiger = null;
 const app = new Vue({
   el: '#app',
   computed : {
+    nameConflict : function() {
+      return this.newName in this.properties;
+    },
+    nameEmpty : function() {
+      return !!!this.nameSelected;
+    },
     dot : function() {
       return toDot(this.dependencies.filter(d => d.left != "" && d.right != ""), this.properties);
     },
@@ -48,6 +54,7 @@ const app = new Vue({
     },
   },
   data: {
+    newName : "",
     filterString : "",
     serialized   : "",
     nameSelected : "",
@@ -60,7 +67,21 @@ const app = new Vue({
     panPoint  : undefined,
   },
   methods : {
-
+    deleteNode : function() {
+      Vue.delete(this.properties, this.nameSelected);
+      this.dependencies = this.dependencies.filter(d => (d.left != this.nameSelected) && (d.right != this.nameSelected));
+      this.nameSelected = "";
+    },
+    assignNewName : function() {
+      Vue.set(this.properties, this.newName, this.properties[this.nameSelected]);
+      Vue.delete(this.properties, this.nameSelected);
+      this.dependencies = this.dependencies.map(dep => ({
+        left  : dep.left  == this.nameSelected ? this.newName : dep.left,
+        right : dep.right == this.nameSelected ? this.newName : dep.right,
+      }));
+      this.nameSelected = this.name;
+      this.newName = "";
+    },
     selectName : function(name) {
       this.nameSelected = name;
       if (! (name in this.properties)) {
@@ -90,6 +111,15 @@ const app = new Vue({
       // change size
       const svg = graph.firstChild;
       $(svg).addClass('full');
+
+      $(svg).on("click", function(e) {
+        if (e.ctrlKey) {
+          Vue.set(that.properties, "**新节点**", [{
+            name : '分类',
+            value : ''
+          }]);
+        }
+      });
 
       const texts = $(svg).find("text");
 
@@ -182,3 +212,11 @@ const app = new Vue({
     }
   }
 });
+
+
+app.properties = {
+  "***未命名***" : [{
+    name  : "分类",
+    value : "",
+  }]
+};

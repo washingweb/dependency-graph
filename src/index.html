@@ -24,15 +24,31 @@
                     <button v-on:click="addDep">+</button>
                 </div>
                 <div id="props">
-                    <div id="name-selected">{{ nameSelected }}</div>
-                    <table>
-                        <tbody>
-                            <tr v-for="prop in propertiesSelected">
-                                <td>{{ prop.name }}</td>
-                                <td><input v-model="prop.value"></input></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div v-if="!!nameSelected">
+                        <div id="name-selected">{{ nameSelected }}</div>
+                        <table>
+                            <tbody>
+                                <tr v-for="prop in propertiesSelected">
+                                    <td>{{ prop.name }}</td>
+                                    <td><input v-model="prop.value"></input></td>
+                                </tr>
+                                <tr>
+                                    <td>重命名</td>
+                                    <td><input v-model="newName"></input</td>
+                                    <td>
+                                        <span v-if="nameConflict">名字冲突</span>
+                                        <span v-else-if="nameEmpty">名字为空</span>
+                                        <button v-on:click="assignNewName" v-else>OK</button>
+                                        <span v-else>名字冲突</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>删除</td>
+                                    <td><button v-on:click="deleteNode">X</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div id="serialized">
                     <input v-model="serialized"></input>
