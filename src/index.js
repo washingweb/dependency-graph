@@ -215,31 +215,6 @@ const app = new Vue({
         this.pan(point);
       })
     },
-    addDep : function() {
-      this.dependencies.push({
-        from  : "",
-        to : "",
-      });
-    },
-    delDep : function(index) {
-      this.dependencies.splice(index, 1);
-    },
-    focus : function(name) {
-      this.nameSelected = name;
-      if (! (name in this.properties)) {
-        Vue.set(this.properties, name, [{
-          "name" : "分类",
-          "value" : "",
-        }]);
-      }
-    },
-    edit  : function(name) {
-      if (!(name in this.properties) && this.nameSelected in this.properties && name != this.nameSelected) {
-        Vue.set(this.properties, name, this.properties[this.nameSelected]);
-        Vue.delete(this.properties, this.nameSelected);
-      }
-      this.nameSelected = name;
-    },
     zoom : function(zoomLevel) {
       this.zoomLevel = zoomLevel;
     },
