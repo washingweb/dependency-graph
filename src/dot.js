@@ -28,7 +28,7 @@ function toDot(dependencies, properties) {
 
     const personSpecs = personNames.map(n => `"${n}" [shape=circle]`).join('\n');
 
-    deps = dependencies.map(d => `"${d.left}" -> "${d.right}";`).join('\n');
+    deps = dependencies.map(d => `"${d.from}" -> "${d.to}";`).join('\n');
 
     const nameDeclarations = names.map(n => `"${n}"`).join('\n');
 

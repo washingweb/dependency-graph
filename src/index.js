@@ -16,7 +16,7 @@ const app = new Vue({
       return !!!this.newName;
     },
     dot : function() {
-      return toDot(this.dependencies.filter(d => d.left != "" && d.right != ""), this.properties);
+      return toDot(this.dependencies.filter(d => d.from != "" && d.to != ""), this.properties);
     },
     propertiesSelected : function() {
       const result = this.properties[this.nameSelected] || [];
@@ -59,6 +59,30 @@ const app = new Vue({
     },
   },
   data: {
+    /*
+      {
+        type : "add",
+        id   : <string>
+      }
+      |
+      {
+        type : "del",
+        id   : <string>
+      }
+      |
+      {
+        type : "set",
+        id   : <string>,
+        name : <string>,
+      }
+      |
+      {
+        type : "dep",
+        from : <string>,
+        to   : <string>,
+      }
+    */
+    transactions : [],
     newName : "",
     filterString : "",
     serialized   : "",
@@ -74,7 +98,7 @@ const app = new Vue({
     },
     deleteNode : function(name) {
       Vue.delete(this.properties, name);
-      this.dependencies = this.dependencies.filter(d => (d.left != name) && (d.right != name));
+      this.dependencies = this.dependencies.filter(d => (d.from != name) && (d.to != name));
       if (name == this.nameSelected) {
         this.nameSelected = "";
       }
@@ -86,8 +110,8 @@ const app = new Vue({
       Vue.set(this.properties, this.newName, this.properties[this.nameSelected]);
       Vue.delete(this.properties, this.nameSelected);
       this.dependencies = this.dependencies.map(dep => ({
-        left  : dep.left  == this.nameSelected ? this.newName : dep.left,
-        right : dep.right == this.nameSelected ? this.newName : dep.right,
+        from  : dep.from  == this.nameSelected ? this.newName : dep.from,
+        to : dep.to == this.nameSelected ? this.newName : dep.to,
       }));
       this.nameSelected = this.newName;
       this.newName = "";
@@ -146,14 +170,14 @@ const app = new Vue({
           if (!!that.nameSelected) {
             const name = $(this)[0].innerHTML;
 
-            const dependenciesRest = that.dependencies.filter(d => d.left != that.nameSelected || d.right != name);
+            const dependenciesRest = that.dependencies.filter(d => d.from != that.nameSelected || d.to != name);
 
             if (dependenciesRest.length != that.dependencies.length) {
               that.dependencies = dependenciesRest;
             } else {
               that.dependencies.push({
-                left  : that.nameSelected,
-                right : name,
+                from  : that.nameSelected,
+                to : name,
               });
             }
           }
@@ -202,8 +226,8 @@ const app = new Vue({
     },
     addDep : function() {
       this.dependencies.push({
-        left  : "",
-        right : "",
+        from  : "",
+        to : "",
       });
     },
     delDep : function(index) {
