@@ -132,6 +132,8 @@ const app = new Vue({
             value : ''
           }]);
           that.nameSelected = DEFAULT_NAME;
+        } else {
+          that.selectName("");
         }
       });
 
@@ -162,7 +164,7 @@ const app = new Vue({
           const name = $(this)[0].innerHTML;
 
           if (name == that.nameSelected) {
-            that.selectName("");
+            // that.selectName("");
           }
           else {
             const name = $(this)[0].innerHTML;
