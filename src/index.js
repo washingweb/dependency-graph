@@ -166,6 +166,10 @@ const app = new Vue({
     propsSelected: [],
   },
   methods : {
+    push : function(actions) {
+      this.actions.push(actions);
+      this.actionsForward = [];
+    },
     back : function() {
       if (this.backable) {
         this.actionsForward.push(this.actions.pop());
@@ -200,7 +204,7 @@ const app = new Vue({
         }
       }
 
-      this.actions.push(actions);
+      this.push(actions);
     },
     deleteNodeSelected : function() {
       this.deleteNode(this.nameSelected);
@@ -209,7 +213,7 @@ const app = new Vue({
 
       // action
       if (USE_ACTION) {
-        this.actions.push([{
+        this.push([{
           type : "del",
           name : name,
         }]);
@@ -229,7 +233,7 @@ const app = new Vue({
 
       // action
       if (USE_ACTION) {
-        this.actions.push([{
+        this.push([{
           type : "rename",
           name : this.nameSelected,
           new_name : this.newName,
@@ -291,7 +295,7 @@ const app = new Vue({
               // }]);
             }
             else {
-              that.actions.push([{
+              that.push([{
                 type : "add",
                 name : DEFAULT_NAME,
               }, {
@@ -328,7 +332,7 @@ const app = new Vue({
 
             if (dependenciesRest.length != that.dependenciesComputed.length) {
               if (USE_ACTION) {
-                that.actions.push([{
+                that.push([{
                   type : "undep",
                   from : that.nameSelected,
                   to   : name,
@@ -339,7 +343,7 @@ const app = new Vue({
               }
             } else {
               if (USE_ACTION) {
-                that.actions.push([{
+                that.push([{
                   type : "dep",
                   from : that.nameSelected,
                   to   : name,
