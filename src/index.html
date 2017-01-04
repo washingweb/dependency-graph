@@ -9,53 +9,30 @@
     </head>
     <body>
         <div id="app">
-            <div id="spec">
-                <input id="filter" placeholder="筛选器" v-model="filterString"></input>
-                <div id="deps">
-                    <table>
-                        <tbody>
-                            <tr v-for="(dep, index) in dependencies">
-                                <td><input v-model="dep.left" readonly></input></td>
-                                <td><input v-model="dep.right" readonly></input></td>
-                                <td><button v-on:click="delDep(index)">X</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <button v-on:click="addDep">+</button>
+            <input id="filter" placeholder="筛选器" v-model="filterString"></input>
+            <div id="props">
+                <div v-if="!!nameSelected">
+                    <span id="rename">
+                        <input v-model="newName" v-bind:placeholder="nameSelected" v-on:keyup.enter="assignNewName"></input>
+                        <button v-on:click="assignNewName" :disabled="nameConflict || nameEmpty">重命名</button>
+                        <span id="error-message" v-if="nameConflict">名字已存在</span>
+                    </span>
+                    <span v-for="prop in propertiesSelected">
+                        <span>{{ prop.name }}</span>
+                        <span><input v-model="prop.value"></input></span>
+                    </span>
                 </div>
-                <div id="props">
-                    <div v-if="!!nameSelected">
-                        <div id="name-selected">{{ nameSelected }}</div>
-                        <table>
-                            <tbody>
-                                <tr v-for="prop in propertiesSelected">
-                                    <td>{{ prop.name }}</td>
-                                    <td><input v-model="prop.value"></input></td>
-                                </tr>
-                                <tr>
-                                    <td>重命名</td>
-                                    <td><input v-model="newName"></input</td>
-                                    <td>
-                                        <span v-if="nameConflict">名字冲突</span>
-                                        <span v-else-if="nameEmpty">名字为空</span>
-                                        <button v-on:click="assignNewName" v-else>OK</button>
-                                        <span v-else>名字冲突</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>删除</td>
-                                    <td><button v-on:click="deleteNodeSelected">X</button></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div id="serialized">
-                    <input v-model="serialized"></input>
+                <div v-else>
+                    <span>
+                    <span>没有选择</span><input v-show="false"></input>
+                    </span>
                 </div>
             </div>
-            <!--<textarea id="dot" v-model="dot"></textarea>-->
             <div id="output"></div>
+            <div id="serialized">
+                <input v-model="serialized"></input>
+            </div>
+            <!--<textarea id="dot" v-model="dot"></textarea>-->
         </div>
         <script src="viz.js"></script>
         <script src="dot.js"></script>

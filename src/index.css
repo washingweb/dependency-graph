@@ -8,35 +8,44 @@ html, body {
     height  : 100%;
 }
 
-#app {
-    height : 100%;
-    display: flex;
-    flex-direction: row;
+body {
+    font-family: monospace;
 }
 
-div#spec {
+input {
+    border-color: #dddddd;
+}
+
+#app {
     height : 100%;
-    flex : 0 0 200px;
     display: flex;
     flex-direction: column;
 }
 
 input#filter {
+    flex : auto 0 0;
     width : 100%;
-}
-
-div#deps {
-    flex : 1;
-    overflow-y: auto;
+    padding : 2px;
 }
 
 div#props {
-    flex : 100px 0 0;
-    border-top: 1px black solid;
+    flex : 25px 0 0;
+    padding : 2px;
+}
+
+span#rename {
+    position: relative;
+}
+
+span#error-message {
+    position: absolute;
+    left : 0px;
+    top  : calc(100% + 5px);
+    color : red;
 }
 
 div#serialized {
-    flex : 20px 0 0;
+    flex : auto 0 0;
 }
 
 div#serialized input {
@@ -49,14 +58,12 @@ textarea#dot {
 }
 
 div#output {
-    height : 100%;
-    flex : 2;
+    flex : 1;
     background-color : white;
-    border : solid 1px black;
+    border : solid 1px #dddddd;
 }
 
 div#name-selected {
-    padding : 5px;
     background-color : #eeeeee;
 }
 

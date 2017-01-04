@@ -1,14 +1,19 @@
 
 var zoomTiger = null;
 
+const DEFAULT_NAME = "**未命名**";
+
 const app = new Vue({
   el: '#app',
   computed : {
+    nodeCount : function() {
+      return Object.keys(this.properties).length;
+    },
     nameConflict : function() {
       return this.newName in this.properties;
     },
     nameEmpty : function() {
-      return !!!this.nameSelected;
+      return !!!this.newName;
     },
     dot : function() {
       return toDot(this.dependencies.filter(d => d.left != "" && d.right != ""), this.properties);
@@ -75,17 +80,23 @@ const app = new Vue({
       }
     },
     assignNewName : function() {
+
+      if (this.nameEmpty || this.nameConflict) return; 
+
       Vue.set(this.properties, this.newName, this.properties[this.nameSelected]);
       Vue.delete(this.properties, this.nameSelected);
       this.dependencies = this.dependencies.map(dep => ({
         left  : dep.left  == this.nameSelected ? this.newName : dep.left,
         right : dep.right == this.nameSelected ? this.newName : dep.right,
       }));
-      this.nameSelected = this.name;
+      this.nameSelected = this.newName;
       this.newName = "";
     },
     selectName : function(name) {
       this.nameSelected = name;
+      
+      if (!!!name) return;
+
       if (! (name in this.properties)) {
         Vue.set(this.properties, name, [{
           "name" : "分类",
@@ -116,10 +127,11 @@ const app = new Vue({
 
       $(svg).on("click", function(e) {
         if (e.shiftKey) {
-          Vue.set(that.properties, "**未命名**", [{
+          Vue.set(that.properties, DEFAULT_NAME, [{
             name : '分类',
             value : ''
           }]);
+          that.nameSelected = DEFAULT_NAME;
         }
       });
 
@@ -222,7 +234,7 @@ const app = new Vue({
 
 
 app.properties = {
-  "**未命名**" : [{
+  [DEFAULT_NAME] : [{
     name  : "分类",
     value : "",
   }]
