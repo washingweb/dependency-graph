@@ -115,7 +115,7 @@ const app = new Vue({
       $(svg).addClass('full');
 
       $(svg).on("click", function(e) {
-        if (e.altKey) {
+        if (e.shiftKey) {
           Vue.set(that.properties, "**未命名**", [{
             name : '分类',
             value : ''
@@ -157,6 +157,8 @@ const app = new Vue({
             that.selectName(name);
           }
         }
+
+        e.stopPropagation();
       });
 
       texts.css("cursor", "pointer");
