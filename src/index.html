@@ -9,7 +9,9 @@
     </head>
     <body>
         <div id="app">
-            <input id="filter" placeholder="筛选器" v-model="filterString"></input>
+            <div id="filter">
+                <input placeholder="筛选器" v-model="filterString"></input>
+            </div>
             <div id="props">
                 <div v-if="!!nameSelected">
                     <span id="rename">

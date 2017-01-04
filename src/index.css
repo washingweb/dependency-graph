@@ -20,8 +20,11 @@ input {
     height : 100%;
 }
 
-input#filter {
+div#filter {
     height : 25px;
+}
+
+div#filter input {
     width : 100%;
     padding : 2px;
 }
