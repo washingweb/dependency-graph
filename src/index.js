@@ -8,7 +8,6 @@ const USE_ACTION = true;
 const app = new Vue({
   el: '#app',
   computed : {
-
     backable : function() {
       return this.actions.length > 0;
     },
@@ -178,6 +177,18 @@ const app = new Vue({
     forward : function() {
       if (this.forwardable) {
         this.actions.push(this.actionsForward.pop());
+      }
+    },
+    goToAction : function(index) {
+      while (this.actions.length > (index + 1)) {
+        this.back();
+      }
+    },
+
+    goToActionForward : function(index) {
+      while ((index+1) > 0) {
+        this.forward();
+        index--;
       }
     },
     updateProps : function() {

@@ -35,7 +35,22 @@ div#props {
 }
 
 div#control {
-    height : 25px;
+    overflow-x : scroll;
+    white-space : nowrap;
+    height : 40px;
+}
+
+.action {
+    display : inline-block;
+    height : 20px;
+    width  : 30px;
+    background-color: black;
+    border : solid 1px white;
+}
+
+.action-forward {
+    background-color: white;
+    border : solid 1px black;
 }
 
 div#control button {
@@ -67,7 +82,7 @@ textarea#dot {
 }
 
 div#output {
-    height : calc(100% - 100px);
+    height : calc(100% - 115px);
     background-color : white;
     border : solid 1px #dddddd;
 }
