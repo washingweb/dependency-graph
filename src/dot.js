@@ -8,8 +8,7 @@ function toDot(dependencies, properties) {
     }));
 
     const groups = _.groupBy(objs, (o) => {
-        const prop = o.props.filter(p => p.name == "分类")[0];
-        return prop.value;
+        return o.props["分类"];
     });
 
     const groupNames = Object.keys(groups).filter(n => n != "");
@@ -21,7 +20,7 @@ function toDot(dependencies, properties) {
     const personNames = [];
     
     names.forEach(n => {
-        if (properties[n].some(p => p.name == "分类" && p.value == "人")) {
+        if (properties[n]["分类"] == "人") {
             personNames.push(n);
         }
     });
