@@ -118,15 +118,6 @@ const app = new Vue({
     },
     selectName : function(name) {
       this.nameSelected = name;
-      
-      if (!!!name) return;
-
-      if (! (name in this.properties)) {
-        Vue.set(this.properties, name, [{
-          "name" : "分类",
-          "value" : "",
-        }]);
-      }
     },
     updateDot : function() {
       const result = Viz(this.dot, { format: "svg",  engine : "dot", });
