@@ -9,6 +9,14 @@ const app = new Vue({
   el: '#app',
   computed : {
 
+    backable : function() {
+      return this.actions.length > 0;
+    },
+
+    forwardable : function() {
+      return this.actionsForward.length > 0;
+    },
+
     dependenciesComputed : function() {
       if (USE_ACTION) {
         var result = this.dependencies.map(d => d);
@@ -145,6 +153,7 @@ const app = new Vue({
         to   : <string>,
       }
     */
+    actionsForward : [],
     actions : [],
     newName : "",
     filterString : "",
@@ -157,6 +166,16 @@ const app = new Vue({
     propsSelected: [],
   },
   methods : {
+    back : function() {
+      if (this.backable) {
+        this.actionsForward.push(this.actions.pop());
+      }
+    },
+    forward : function() {
+      if (this.forwardable) {
+        this.actions.push(this.actionsForward.pop());
+      }
+    },
     updateProps : function() {
       const existProp = this.propertiesComputed[this.nameSelected];
       actions = [];

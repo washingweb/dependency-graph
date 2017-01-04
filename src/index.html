@@ -32,6 +32,9 @@
                 </div>
             </div>
             <div id="output"></div>
+            <div id="control">
+                <button v-on:click="back()" v-if="backable">退</button><button v-on:click="forward()" v-if="forwardable">进</button>
+            </div>
             <div id="serialized">
                 <input v-model="serialized"></input>
             </div>

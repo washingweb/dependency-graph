@@ -34,6 +34,14 @@ div#props {
     padding : 2px;
 }
 
+div#control {
+    height : 25px;
+}
+
+div#control button {
+    height : 25px;
+}
+
 span#rename {
     position: relative;
 }
@@ -59,7 +67,7 @@ textarea#dot {
 }
 
 div#output {
-    height : calc(100% - 75px);
+    height : calc(100% - 100px);
     background-color : white;
     border : solid 1px #dddddd;
 }
