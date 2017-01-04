@@ -64,10 +64,15 @@ const app = new Vue({
     panPoint  : undefined,
   },
   methods : {
-    deleteNode : function() {
-      Vue.delete(this.properties, this.nameSelected);
-      this.dependencies = this.dependencies.filter(d => (d.left != this.nameSelected) && (d.right != this.nameSelected));
-      this.nameSelected = "";
+    deleteNodeSelected : function() {
+      this.deleteNode(this.nameSelected);
+    },
+    deleteNode : function(name) {
+      Vue.delete(this.properties, name);
+      this.dependencies = this.dependencies.filter(d => (d.left != name) && (d.right != name));
+      if (name == this.nameSelected) {
+        this.nameSelected = "";
+      }
     },
     assignNewName : function() {
       Vue.set(this.properties, this.newName, this.properties[this.nameSelected]);
@@ -138,6 +143,9 @@ const app = new Vue({
               });
             }
           }
+        } else if (e.shiftKey) {
+            const name = $(this)[0].innerHTML;
+            that.deleteNode(name);
         } else {
           const name = $(this)[0].innerHTML;
 
