@@ -183,6 +183,14 @@ const app = new Vue({
     docReady     : true,
   },
   methods : {
+    newDoc : function() {
+      this.nodes          = { [DEFAULT_NAME] : { "分类" : "" }};
+      this.dependencies   = [];
+      this.actions        = [];
+      this.actionsForward = [];
+      this.zoomLevel      = 1.0;
+      this.panPoint       = { x : 0.0, y : 0.0 };
+    },
     updateUrl : function() {
       window.location.hash = JSON.stringify({
         data : {

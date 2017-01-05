@@ -13,7 +13,9 @@
                 <input placeholder="筛选器" v-model="filterString"></input>
             </div>
             <div id="props">
-                <div v-if="!!nameSelected">
+                <button v-on:click="newDoc">新</button>
+                <span class="hori-spliter">&nbsp;</span>
+                <span v-if="!!nameSelected">
                     <span id="rename">
                         <input v-model="newName" v-bind:placeholder="nameSelected" v-on:keyup.enter="assignNewName"></input>
                         <button v-on:click="assignNewName" :disabled="nameConflict || nameEmpty">重命名</button>
@@ -24,12 +26,12 @@
                         <span><input v-model="prop.value"></input></span>
                     </span>
                     <button v-on:click="updateProps">更新</button>
-                </div>
-                <div v-else>
+                </span>
+                <span v-else>
                     <span>
                     <span>没有选择</span><input v-show="false"></input>
                     </span>
-                </div>
+                </span>
             </div>
             <div id="output"></div>
             <div id="control">

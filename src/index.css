@@ -20,6 +20,10 @@ input {
     height : 100%;
 }
 
+.hori-spliter {
+    border-right : solid 1px #aaaaaa;
+}
+
 div#filter {
     height : 25px;
 }
