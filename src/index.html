@@ -25,7 +25,7 @@
                         <span>{{ prop.key }}</span>
                         <span><input v-model="prop.value" v-on:keyup.enter="updateProps"></input></span>
                     </span>
-                    <button v-on:click="updateProps">更新</button>
+                    <button v-on:click="updateProps" :disabled="!propsAreNew">更新</button>
                 </span>
                 <span v-else>
                     <span>

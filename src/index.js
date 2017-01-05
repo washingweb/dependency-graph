@@ -98,6 +98,37 @@ const app = new Vue({
       const name = this.filter.name;
 
     },
+    updatePropsActions : function() {
+      const existProp = this.propertiesComputed[this.nameSelected];
+      actions = [];
+      
+      for (var prop of this.propsSelected) {
+        if (!(prop.key in existProp) || (prop.key in existProp) && (prop.value != existProp[prop.key])) {
+            actions.push({
+              type  : "set",
+              name  : this.nameSelected,
+              key   : prop.key,
+              value : prop.value == "" ? undefined : prop.value,
+            });
+        }
+      }
+
+      for (var key in existProp) {
+        if (this.propsSelected.filter(p => p.key == key).length == 0) {
+          actions.push({
+              type  : "set",
+              name  : this.nameSelected,
+              key,
+              value : undefined,
+          });
+        }
+      }
+
+      return actions;
+    },
+    propsAreNew : function() {
+      return this.updatePropsActions.length > 0;
+    }
   },
   watch : {
     nameSelected : function() {
@@ -238,29 +269,7 @@ const app = new Vue({
       }
     },
     updateProps : function() {
-      const existProp = this.propertiesComputed[this.nameSelected];
-      actions = [];
-      for (var prop of this.propsSelected) {
-        if (!(prop.key in existProp) || (prop.key in existProp) && (prop.value != existProp[prop.key])) {
-            actions.push({
-              type  : "set",
-              name  : this.nameSelected,
-              key   : prop.key,
-              value : prop.value == "" ? undefined : prop.value,
-            });
-        }
-      }
-      for (var key in existProp) {
-        if (this.propsSelected.filter(p => p.key == key).length == 0) {
-          actions.push({
-              type  : "set",
-              name  : this.nameSelected,
-              key,
-              value : undefined,
-          });
-        }
-      }
-
+      const actions = this.updatePropsActions;
       this.push(actions);
     },
     deleteNodeSelected : function() {
