@@ -181,7 +181,17 @@ const app = new Vue({
   },
   methods : {
     updateUrl : function() {
-      history.replaceState(null, null, `index.html?zoomLevel=${JSON.stringify(this.zoomLevel)}&panPoint=${JSON.stringify(this.panPoint)}&data=${this.serialized}`);
+      window.location.hash = JSON.stringify({
+        data : {
+          dependencies : this.dependencies,
+          properties   : this.properties,
+          actions      : this.actions,
+        },
+        view : {
+          zoomLevel : this.zoomLevel,
+          panPoint  : this.panPoint,
+        }
+      });
     },
     push : function(actions) {
       this.actions.push(actions);
@@ -437,38 +447,13 @@ const app = new Vue({
   }
 });
 
-var data = getParameterByName("data");
-var zoomLevel = getParameterByName("zoomLevel");
-var panPoint = getParameterByName("panPoint");
-
-if (!!data) {
-  app.serialized = data;
-} else {
-  app.properties = {
-    [DEFAULT_NAME] : {
-      "分类" : "",
-    }
-  };
-}
-
-if (!!zoomLevel) {
-  app.zoomLevel = JSON.parse(zoomLevel);
-}
-
-if (!!panPoint) {
-  app.panPoint = JSON.parse(panPoint);
-}
-
-function getParameterByName(name, url) {
-    if (!url) {
-      url = window.location.href;
-    }
-    name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
+if (!!window.location.hash) {
+  const state = JSON.parse(window.location.hash.slice(1));
+  app.properties   = state.data.properties;
+  app.dependencies = state.data.dependencies;
+  app.actions      = state.data.actions;
+  app.zoomLevel    = state.view.zoomLevel;
+  app.panPoint     = state.view.panPoint;
 }
 
 function debounce(func, wait, immediate) {
