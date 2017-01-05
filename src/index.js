@@ -110,15 +110,17 @@ const app = new Vue({
       });
     },
     serialized : function() {
-      try {
-        const obj = JSON.parse(this.serialized);
-        this.dependencies = obj.dependencies;
-        this.nodes   = obj.nodes;
-        this.actions      = obj.actions || [];
-        this.updateUrl();
-      } catch(e) {
-        console.log(e);
-        alert("bug");
+      if (!!this.serialized) {
+        try {
+          const obj = JSON.parse(this.serialized);
+          this.dependencies = obj.dependencies;
+          this.nodes   = obj.nodes;
+          this.actions      = obj.actions || [];
+          this.updateUrl();
+          this.docReady = true;
+        } catch(e) {
+          this.docReady = false;
+        }
       }
     },
     zoomLevel : debounce(function() {
@@ -178,13 +180,14 @@ const app = new Vue({
       y : 0.0,
     },
     propsSelected: [],
+    docReady     : true,
   },
   methods : {
     updateUrl : function() {
       window.location.hash = JSON.stringify({
         data : {
           dependencies : this.dependencies,
-          nodes   : this.nodes,
+          nodes        : this.nodes,
           actions      : this.actions,
         },
         view : {
@@ -448,12 +451,17 @@ const app = new Vue({
 });
 
 if (!!window.location.hash) {
-  const state = JSON.parse(window.location.hash.slice(1));
-  app.nodes   = state.data.nodes;
-  app.dependencies = state.data.dependencies;
-  app.actions      = state.data.actions;
-  app.zoomLevel    = state.view.zoomLevel;
-  app.panPoint     = state.view.panPoint;
+  try {
+    const state = JSON.parse(window.location.hash.slice(1));
+    app.nodes   = state.data.nodes;
+    app.dependencies = state.data.dependencies;
+    app.actions      = state.data.actions;
+    app.zoomLevel    = state.view.zoomLevel;
+    app.panPoint     = state.view.panPoint;
+    docReady = true;
+  } catch (e) {
+    docReady = false;
+  }
 } else {
   app.nodes   = { [DEFAULT_NAME] : { "分类" : "" }};
 }

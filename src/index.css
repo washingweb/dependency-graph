@@ -76,6 +76,10 @@ div#serialized input {
     width : 100%;
 }
 
+.error {
+    background-color : red;
+}
+
 textarea#dot {
     height : 100%;
     flex : 0 0 200px;
