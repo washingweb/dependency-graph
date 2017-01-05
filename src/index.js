@@ -348,10 +348,6 @@ const app = new Vue({
           // action
           if (USE_ACTION) {
             if (DEFAULT_NAME in that.propertiesComputed) {
-              // that.actions.push([{
-              //   type : "set",
-              //   name : DEFAULT_NAME,
-              // }]);
             }
             else {
               that.push([{
@@ -372,7 +368,8 @@ const app = new Vue({
             }]);
           }
 
-          that.nameSelected = DEFAULT_NAME;
+          that.selectName(DEFAULT_NAME);
+          
         } else {
           that.selectName("");
         }
