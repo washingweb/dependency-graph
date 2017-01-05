@@ -1,10 +1,10 @@
-function toDot(dependencies, nodes) {
+function toDot(dependencies, properties) {
 
-    const names = Object.keys(nodes).filter(n => n != "");
+    const names = Object.keys(properties).filter(n => n != "");
     
     const objs = names.map(n => ({
         name  : n,
-        props : nodes[n],
+        props : properties[n],
     }));
 
     const groups = _.groupBy(objs, (o) => {
@@ -20,7 +20,7 @@ function toDot(dependencies, nodes) {
     const personNames = [];
     
     names.forEach(n => {
-        if (nodes[n]["分类"] == "人") {
+        if (properties[n]["分类"] == "人") {
             personNames.push(n);
         }
     });
