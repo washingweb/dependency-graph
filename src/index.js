@@ -218,13 +218,11 @@ const app = new Vue({
     back : function() {
       if (this.backable) {
         this.actionsForward.push(this.actions.pop());
-        console.log("back");
       }
     },
     forward : function() {
       if (this.forwardable) {
         this.actions.push(this.actionsForward.pop());
-        console.log("forward");
       }
     },
     goToAction : function(index) {
@@ -283,7 +281,7 @@ const app = new Vue({
       }
 
       if (name == this.nameSelected) {
-        this.nameSelected = "";
+        this.selectName("");
       }
     },
     assignNewName : function() {
@@ -306,7 +304,7 @@ const app = new Vue({
         }));
       }
       
-      this.nameSelected = this.newName;
+      this.selectName(this.newName);
       this.newName = "";
     },
     selectName : function(name) {
@@ -369,9 +367,9 @@ const app = new Vue({
           }
 
           that.selectName(DEFAULT_NAME);
-          
+
         } else {
-          that.selectName("");
+          // that.selectName("");
         }
       });
 
@@ -419,7 +417,7 @@ const app = new Vue({
           const name = $(this)[0].innerHTML;
 
           if (name == that.nameSelected) {
-            // that.selectName("");
+            that.selectName("");
           }
           else {
             const name = $(this)[0].innerHTML;
