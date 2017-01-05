@@ -33,6 +33,8 @@ const app = new Vue({
                 from : d.from == action.name ? action.new_name : d.from,
                 to   : d.to == action.name ? action.new_name : d.to,
               }));
+            } else if (action.type == "del") {
+              result = result.filter(d => (d.from != action.name) && (d.to != action.name))
             }
           }
         }
