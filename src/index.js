@@ -106,7 +106,6 @@ const app = new Vue({
         properties   : this.properties,
         actions      : this.actions,
       });
-      history.pushState(null, null, `index.html?data=${this.serialized}`);
     },
     serialized : function() {
       try {
@@ -114,8 +113,18 @@ const app = new Vue({
         this.dependencies = obj.dependencies;
         this.properties   = obj.properties;
         this.actions      = obj.actions || [];
-      } catch(e) {}
+        this.updateUrl();
+      } catch(e) {
+        console.log(e);
+        alert("bug");
+      }
     },
+    zoomLevel : debounce(function() {
+      this.updateUrl();
+    }, 500),
+    panPoint : debounce(function() {
+      this.updateUrl();
+    }, 500),
   },
   data: {
     /*
@@ -161,11 +170,17 @@ const app = new Vue({
     nameSelected : "",
     dependencies : [],
     properties : {},
-    zoomLevel : undefined,
-    panPoint  : undefined,
+    zoomLevel : 1.0,
+    panPoint  : {
+      x : 0.0,
+      y : 0.0,
+    },
     propsSelected: [],
   },
   methods : {
+    updateUrl : function() {
+      history.replaceState(null, null, `index.html?zoomLevel=${JSON.stringify(this.zoomLevel)}&panPoint=${JSON.stringify(this.panPoint)}&data=${this.serialized}`);
+    },
     push : function(actions) {
       this.actions.push(actions);
       this.actionsForward = [];
@@ -420,8 +435,10 @@ const app = new Vue({
   }
 });
 
-
 var data = getParameterByName("data");
+var zoomLevel = getParameterByName("zoomLevel");
+var panPoint = getParameterByName("panPoint");
+
 if (!!data) {
   app.serialized = data;
 } else {
@@ -430,6 +447,14 @@ if (!!data) {
       "分类" : "",
     }
   };
+}
+
+if (!!zoomLevel) {
+  app.zoomLevel = JSON.parse(zoomLevel);
+}
+
+if (!!panPoint) {
+  app.panPoint = JSON.parse(panPoint);
 }
 
 function getParameterByName(name, url) {
@@ -443,3 +468,18 @@ function getParameterByName(name, url) {
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
+
+function debounce(func, wait, immediate) {
+    var timeout;
+    return function() {
+        var context = this, args = arguments;
+        var later = function() {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+        };
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+    };
+};
