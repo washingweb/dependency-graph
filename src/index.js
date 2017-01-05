@@ -454,6 +454,8 @@ if (!!window.location.hash) {
   app.actions      = state.data.actions;
   app.zoomLevel    = state.view.zoomLevel;
   app.panPoint     = state.view.panPoint;
+} else {
+  app.properties   = { [DEFAULT_NAME] : { "分类" : "" }};
 }
 
 function debounce(func, wait, immediate) {
