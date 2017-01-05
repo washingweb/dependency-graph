@@ -47,7 +47,7 @@ const app = new Vue({
         for (var actions of this.actions) {
           for (var action of actions) {
             if (action.type == "add") {
-              result[action.name] = [];
+              result[action.name] = {};
             } else if (action.type == "del") {
               delete result[action.name];
             } else if (action.type == "set") {
