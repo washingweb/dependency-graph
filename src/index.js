@@ -45,7 +45,7 @@ const app = new Vue({
     },
     propertiesComputed : function() {
       if (USE_ACTION) {
-        var result = Object.assign({}, this.properties);
+        var result = Object.assign({}, this.nodes);
         for (var actions of this.actions) {
           for (var action of actions) {
             if (action.type == "add") {
@@ -66,11 +66,11 @@ const app = new Vue({
         }
         return result;
       } else {
-        return this.properties;
+        return this.nodes;
       }
     },
     nodeCount : function() {
-      return Object.keys(this.properties).length;
+      return Object.keys(this.nodes).length;
     },
     nameConflict : function() {
       return this.newName in this.propertiesComputed;
@@ -105,7 +105,7 @@ const app = new Vue({
       this.updateDot();
       this.serialized = JSON.stringify({
         dependencies : this.dependencies,
-        properties   : this.properties,
+        nodes   : this.nodes,
         actions      : this.actions,
       });
     },
@@ -113,7 +113,7 @@ const app = new Vue({
       try {
         const obj = JSON.parse(this.serialized);
         this.dependencies = obj.dependencies;
-        this.properties   = obj.properties;
+        this.nodes   = obj.nodes;
         this.actions      = obj.actions || [];
         this.updateUrl();
       } catch(e) {
@@ -171,7 +171,7 @@ const app = new Vue({
     serialized   : "",
     nameSelected : "",
     dependencies : [],
-    properties : {},
+    nodes : {},
     zoomLevel : 1.0,
     panPoint  : {
       x : 0.0,
@@ -184,7 +184,7 @@ const app = new Vue({
       window.location.hash = JSON.stringify({
         data : {
           dependencies : this.dependencies,
-          properties   : this.properties,
+          nodes   : this.nodes,
           actions      : this.actions,
         },
         view : {
@@ -258,7 +258,7 @@ const app = new Vue({
         }]);
       }
       else {
-        Vue.delete(this.properties, name);
+        Vue.delete(this.nodes, name);
         this.dependencies = this.dependencies.filter(d => (d.from != name) && (d.to != name));
       }
 
@@ -278,8 +278,8 @@ const app = new Vue({
           new_name : this.newName,
         }]);
       } else {
-        Vue.set(this.properties, this.newName, this.properties[this.nameSelected]);
-        Vue.delete(this.properties, this.nameSelected);
+        Vue.set(this.nodes, this.newName, this.nodes[this.nameSelected]);
+        Vue.delete(this.nodes, this.nameSelected);
         this.dependencies = this.dependencies.map(dep => ({
           from  : dep.from  == this.nameSelected ? this.newName : dep.from,
           to : dep.to == this.nameSelected ? this.newName : dep.to,
@@ -346,7 +346,7 @@ const app = new Vue({
             }
           }
           else {
-            Vue.set(that.properties, DEFAULT_NAME, [{
+            Vue.set(that.nodes, DEFAULT_NAME, [{
               name : '分类',
               value : ''
             }]);
@@ -449,13 +449,13 @@ const app = new Vue({
 
 if (!!window.location.hash) {
   const state = JSON.parse(window.location.hash.slice(1));
-  app.properties   = state.data.properties;
+  app.nodes   = state.data.nodes;
   app.dependencies = state.data.dependencies;
   app.actions      = state.data.actions;
   app.zoomLevel    = state.view.zoomLevel;
   app.panPoint     = state.view.panPoint;
 } else {
-  app.properties   = { [DEFAULT_NAME] : { "分类" : "" }};
+  app.nodes   = { [DEFAULT_NAME] : { "分类" : "" }};
 }
 
 function debounce(func, wait, immediate) {
