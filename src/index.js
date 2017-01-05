@@ -55,7 +55,7 @@ const app = new Vue({
             } else if (action.type == "set") {
               const newNode = Object.assign({}, result[action.name]);
               if (action.value == undefined) {
-                delete newNode[action.key];
+                newNode[action.key] = "";
               } else {
                 newNode[action.key] = action.value;
               }
