@@ -23,7 +23,7 @@
                     </span>
                     <span v-for="prop in propsSelected">
                         <span>{{ prop.key }}</span>
-                        <span><input v-model="prop.value"></input></span>
+                        <span><input v-model="prop.value" v-on:keyup.enter="updateProps"></input></span>
                     </span>
                     <button v-on:click="updateProps">更新</button>
                 </span>

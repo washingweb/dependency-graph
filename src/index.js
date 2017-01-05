@@ -53,11 +53,13 @@ const app = new Vue({
             } else if (action.type == "del") {
               delete result[action.name];
             } else if (action.type == "set") {
+              const newNode = Object.assign({}, result[action.name]);
               if (action.value == undefined) {
-                delete result[action.name];
+                delete newNode[action.key];
               } else {
-                result[action.name][action.key] = action.value;
+                newNode[action.key] = action.value;
               }
+              result[action.name] = newNode;
             } else if (action.type == "rename") {
               result[action.new_name] = result[action.name];
               delete result[action.name];
@@ -190,6 +192,11 @@ const app = new Vue({
       this.actionsForward = [];
       this.zoomLevel      = 1.0;
       this.panPoint       = { x : 0.0, y : 0.0 };
+      this.nameSelected   = "";
+      this.filterString   = "";
+      this.propsSelected  = [];
+      this.docReady       = true;
+      this.updateUrl();
     },
     updateUrl : function() {
       window.location.hash = JSON.stringify({
@@ -211,11 +218,13 @@ const app = new Vue({
     back : function() {
       if (this.backable) {
         this.actionsForward.push(this.actions.pop());
+        console.log("back");
       }
     },
     forward : function() {
       if (this.forwardable) {
         this.actions.push(this.actionsForward.pop());
+        console.log("forward");
       }
     },
     goToAction : function(index) {
