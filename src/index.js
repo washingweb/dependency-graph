@@ -106,6 +106,7 @@ const app = new Vue({
         properties   : this.properties,
         actions      : this.actions,
       });
+      history.pushState(null, null, `index.html?data=${this.serialized}`);
     },
     serialized : function() {
       try {
@@ -420,8 +421,25 @@ const app = new Vue({
 });
 
 
-app.properties = {
-  [DEFAULT_NAME] : {
-    "分类" : "",
-  }
-};
+var data = getParameterByName("data");
+if (!!data) {
+  app.serialized = data;
+} else {
+  app.properties = {
+    [DEFAULT_NAME] : {
+      "分类" : "",
+    }
+  };
+}
+
+function getParameterByName(name, url) {
+    if (!url) {
+      url = window.location.href;
+    }
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
