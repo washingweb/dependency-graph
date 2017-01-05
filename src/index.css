@@ -44,7 +44,15 @@ div#control {
     display : inline-block;
     height : 20px;
     width  : 30px;
-    background-color: black;
+}
+
+.action-origin {
+    background-color : #aaaaaa;
+    border : solid 1px white;
+}
+
+.action-backward {
+    background-color : black;
     border : solid 1px white;
 }
 

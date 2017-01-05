@@ -33,9 +33,9 @@
             </div>
             <div id="output"></div>
             <div id="control">
-                <div v-for="(action, index) in actions" class="action" v-on:mouseover="goToAction(index)"></div>
-                <div v-for="(action, index) in actionsForward" class="action action-forward" v-on:mouseover="goToActionForward(index)"></div>
-                <!--<button v-on:click="back()" v-if="backable">退</button><button v-on:click="forward()" v-if="forwardable">进</button>-->
+                <div class="action action-origin" v-on:mouseover="goToAction(-1)"></div><!--
+                --><div v-for="(action, index) in actions" class="action action-backward" v-on:mouseover="goToAction(index)"></div><!--
+                --><div v-for="(action, index) in actionsForward" class="action action-forward" v-on:mouseover="goToActionForward(index)"></div>
             </div>
             <div id="serialized">
                 <input v-model="serialized" v-bind:class="{ error : !docReady }"></input>
