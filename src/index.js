@@ -99,6 +99,10 @@ const app = new Vue({
 
     },
     updatePropsActions : function() {
+
+      if (!!!this.nameSelected)
+        return [];
+
       const existProp = this.propertiesComputed[this.nameSelected];
       actions = [];
       
@@ -150,6 +154,7 @@ const app = new Vue({
           this.nodes   = obj.nodes;
           this.actions      = obj.actions || [];
           this.updateUrl();
+          this.selectName("");
           this.docReady = true;
         } catch(e) {
           this.docReady = false;
