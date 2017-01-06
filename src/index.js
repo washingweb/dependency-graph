@@ -81,11 +81,11 @@ const app = new Vue({
       return !!!this.newName;
     },
     dot : function() {
-      return toDot(this.dependenciesComputed.filter(d => d.from != "" && d.to != ""), this.propertiesComputed);
+      return toDot(this.dependenciesFilterred.filter(d => d.from != "" && d.to != ""), this.propertiesFilterred);
     },
     filter : function() {
         const filter = this.filterString;
-        const parts  = filter.split(/\S+/);
+        const parts = filter.trim().split(/\s+/);
         const cmd    = parts[0];
         const name   = parts[1];
         return {
@@ -93,10 +93,37 @@ const app = new Vue({
           name,
         };
     },
-    dependenciesFilterred : function() {
+    namesFilterred : function() {
       const cmd = this.filter.cmd;
       const name = this.filter.name;
-
+      if (cmd == ">" || name != undefined) {
+        const names = {};
+        const deps = [];
+        gt(name, this.dependenciesComputed, names, deps);
+        return { names, deps };
+      }
+      else {
+        return undefined;
+      }
+    },
+    dependenciesFilterred : function() {
+      if (this.namesFilterred == undefined)
+        return this.dependenciesComputed
+      else
+        return this.namesFilterred.deps;
+    },
+    propertiesFilterred : function() {
+      if (this.namesFilterred == undefined)
+        return this.propertiesComputed;
+      else {
+        const properties = {};
+        for (var name of Object.keys(this.propertiesComputed)) {
+          if (name in this.namesFilterred.names) {
+            properties[name] = this.propertiesComputed[name];
+          }
+        }
+        return properties;
+      }
     },
     updatePropsActions : function() {
 
@@ -510,3 +537,15 @@ function debounce(func, wait, immediate) {
         if (callNow) func.apply(context, args);
     };
 };
+
+function gt(name, deps, names, depsOut) {
+  for (var dep of deps) {
+    if (dep.from == name) {
+      depsOut.push(dep);
+      if (!(dep.to in names)) {
+        names[dep.to] = true;
+        gt(dep.to, deps, names, depsOut);
+      }
+    }
+  }
+}
