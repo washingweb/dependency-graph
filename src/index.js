@@ -427,7 +427,7 @@ const app = new Vue({
       const that = this;
 
       texts.on("click", function(e) {
-        if (e.ctrlKey) {
+        if (e.altKey) {
           if (!!that.nameSelected) {
             const name = $(this)[0].innerHTML;
 
