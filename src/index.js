@@ -222,17 +222,21 @@ const app = new Vue({
   },
   methods : {
     newDoc : function() {
-      this.nodes          = { [DEFAULT_NAME] : { "分类" : "" }};
-      this.dependencies   = [];
-      this.actions        = [];
-      this.actionsForward = [];
-      this.zoomLevel      = 1.0;
-      this.panPoint       = { x : 0.0, y : 0.0 };
-      this.nameSelected   = "";
-      this.filterString   = "";
-      this.propsSelected  = [];
-      this.docReady       = true;
-      this.updateUrl();
+      if (confirm('所有数据会被清除，无法恢复，确定要继续么？')) {
+        this.nodes          = { [DEFAULT_NAME] : { "分类" : "" }};
+        this.dependencies   = [];
+        this.actions        = [];
+        this.actionsForward = [];
+        this.zoomLevel      = 1.0;
+        this.panPoint       = { x : 0.0, y : 0.0 };
+        this.nameSelected   = "";
+        this.filterString   = "";
+        this.propsSelected  = [];
+        this.docReady       = true;
+        this.updateUrl();
+      } else {
+          // Do nothing!
+      }
     },
     updateUrl : function() {
       window.location.hash = JSON.stringify({

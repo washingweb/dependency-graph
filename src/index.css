@@ -50,6 +50,10 @@ div#control {
     width  : 30px;
 }
 
+.action:hover {
+    cursor : pointer;
+}
+
 .action-origin {
     background-color : #aaaaaa;
     border : solid 1px white;
