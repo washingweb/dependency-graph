@@ -96,13 +96,17 @@ const app = new Vue({
     namesFilterred : function() {
       const cmd = this.filter.cmd;
       const name = this.filter.name;
-      if (cmd == ">" || name != undefined) {
+      if (cmd == ">" && !!name) {
         const names = {};
         const deps = [];
         gt(name, this.dependenciesComputed, names, deps);
         return { names, deps };
-      }
-      else {
+      } else if (cmd == "<" && !!name) {
+        const names = {};
+        const deps = [];
+        lt(name, this.dependenciesComputed, names, deps);
+        return { names, deps };
+      } else {
         return undefined;
       }
     },
@@ -545,6 +549,18 @@ function gt(name, deps, names, depsOut) {
       depsOut.push(dep);
       if (!(dep.to in names)) {
         gt(dep.to, deps, names, depsOut);
+      }
+    }
+  }
+}
+
+function lt(name, deps, names, depsOut) {
+  names[name] = true;
+  for (var dep of deps) {
+    if (dep.to == name) {
+      depsOut.push(dep);
+      if (!(dep.from in names)) {
+        lt(dep.from, deps, names, depsOut);
       }
     }
   }
