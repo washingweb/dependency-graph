@@ -354,9 +354,9 @@ const app = new Vue({
       }
       
       this.selectName(this.newName);
-      this.newName = "";
     },
     selectName : function(name) {
+      this.newName = name;
       this.nameSelected = name;
       if (!!name) {
         const prop = this.propertiesComputed[name];

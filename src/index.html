@@ -17,7 +17,7 @@
                 <span class="hori-spliter">&nbsp;</span>
                 <span v-if="!!nameSelected">
                     <span id="rename">
-                        <input v-model="newName" v-bind:placeholder="nameSelected" v-on:keyup.enter="assignNewName"></input>
+                        <input v-model="newName" placeholder="新名字" v-on:keyup.enter="assignNewName"></input>
                         <button v-on:click="assignNewName" :disabled="nameConflict || nameEmpty">重命名</button>
                         <span id="error-message" v-if="nameConflict">名字已存在</span>
                     </span>
