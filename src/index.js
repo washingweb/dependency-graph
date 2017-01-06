@@ -539,11 +539,11 @@ function debounce(func, wait, immediate) {
 };
 
 function gt(name, deps, names, depsOut) {
+  names[name] = true;
   for (var dep of deps) {
     if (dep.from == name) {
       depsOut.push(dep);
       if (!(dep.to in names)) {
-        names[dep.to] = true;
         gt(dep.to, deps, names, depsOut);
       }
     }
