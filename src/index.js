@@ -372,6 +372,9 @@ const app = new Vue({
           key  : k,
           value : prop[k],
         }));
+
+        $("#new-name").focus();
+
       } else {
         this.propsSelected = [];
       }
