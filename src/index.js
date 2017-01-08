@@ -87,7 +87,7 @@ const app = new Vue({
       return !!!this.newName;
     },
     dot : function() {
-      return toDot(this.dependenciesFilterred.filter(d => d.from != "" && d.to != ""), this.propertiesFilterred);
+      return toDot(this.dependenciesFilterred.filter(d => d.from != "" && d.to != ""), this.propertiesFilterred, this.nameSelected);
     },
     filter : function() {
         const filter = this.filterString;
@@ -552,13 +552,6 @@ const app = new Vue({
       });
 
       texts.css("cursor", "pointer");
-
-      if (!!this.nameSelected) {
-        const text = texts.filter(function() {
-          return $(this)[0].innerHTML == that.nameSelected;
-        });
-        text.parent().css("fill", "red");
-      }
 
       var zoomTiger = svgPanZoom(svg, {
         dblClickZoomEnabled: false

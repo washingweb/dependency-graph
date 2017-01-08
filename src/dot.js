@@ -1,4 +1,4 @@
-function toDot(dependencies, properties) {
+function toDot(dependencies, properties, nameSelected) {
 
     const names = Object.keys(properties).filter(n => n != "");
     
@@ -50,6 +50,8 @@ function toDot(dependencies, properties) {
 
     const nameDeclarations = names.map(n => `"${n}"`).join('\n');
 
+    const selectedSpecs = !!nameSelected ? `"${nameSelected}" [style=filled,fillcolor=cadetblue2]\n` : "\n";
+
     const deps = dependencies.map(d => `"${d.from}" -> "${d.to}";`).join('\n');
 
     return `
@@ -68,6 +70,8 @@ ${projectSpecs}
 ${personSpecs}
 
 ${errorSpecs}
+
+${selectedSpecs}
 
 ${deps}
 }
