@@ -386,7 +386,6 @@ const app = new Vue({
           value : prop[k],
         }));
 
-        console.log("focus");
         setTimeout(() => {
           $("#new-name").focus();
         });
