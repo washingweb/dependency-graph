@@ -271,7 +271,7 @@ const app = new Vue({
     },
     focusRename : function() {
       setTimeout(() => {
-        $("#new-name").focus()
+        $("#new-name").select().focus();
       });
     },
     prependNode : function() {
