@@ -8,6 +8,9 @@ const USE_ACTION = true;
 const app = new Vue({
   el: '#app',
   computed : {
+    unnamedNode : function() {
+      return DEFAULT_NAME in this.propertiesComputed;
+    },
     backable : function() {
       return this.actions.length > 0;
     },
@@ -252,6 +255,30 @@ const app = new Vue({
     docReady     : true,
   },
   methods : {
+    prependNode : function() {
+      if (!(DEFAULT_NAME in this.propertiesComputed)) {
+        this.push([{
+          type : "add",
+          name : DEFAULT_NAME
+        }, {
+          type  : "dep",
+          from  : DEFAULT_NAME,
+          to    : this.nameSelected
+        }]);
+      }
+    },
+    appendNode : function() {
+      if (!(DEFAULT_NAME in this.propertiesComputed)) {
+        this.push([{
+          type : "add",
+          name : DEFAULT_NAME
+        }, {
+          type  : "dep",
+          from  : this.nameSelected,
+          to : DEFAULT_NAME
+        }]);
+      }
+    },
     newDoc : function() {
       if (confirm('所有数据会被清除，无法恢复，确定要继续么？')) {
         this.nodes          = { [DEFAULT_NAME] : { "分类" : "" }};
@@ -486,7 +513,9 @@ const app = new Vue({
         text.parent().css("fill", "red");
       }
 
-      var zoomTiger = svgPanZoom(svg);
+      var zoomTiger = svgPanZoom(svg, {
+        dblClickZoomEnabled: false
+      });
       if (this.zoomLevel != undefined) {
         zoomTiger.zoom(this.zoomLevel);
       }

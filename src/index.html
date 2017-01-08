@@ -13,7 +13,9 @@
                 <input placeholder="筛选器" v-model="filterString"></input>
             </div>
             <div id="props">
-                <button v-on:click="newDoc">新</button>
+                <button v-on:click="newDoc">清空！</button>
+                <button v-on:click="prependNode" v-if="!!nameSelected && !unnamedNode">前</button>
+                <button v-on:click="appendNode" v-if="!!nameSelected && !unnamedNode">后</button>
                 <span class="hori-spliter">&nbsp;</span>
                 <span v-if="!!nameSelected">
                     <span id="rename">
