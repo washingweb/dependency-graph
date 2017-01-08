@@ -84,10 +84,6 @@ span#error-message {
     color : red;
 }
 
-div#serialized {
-    height : 25px;
-}
-
 div#serialized input {
     width : 100%;
 }
@@ -102,7 +98,7 @@ textarea#dot {
 }
 
 div#output {
-    height : calc(100% - 115px);
+    height : calc(100% - 90px);
     background-color : white;
     border : solid 1px #dddddd;
 }

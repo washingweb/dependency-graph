@@ -174,26 +174,6 @@ const app = new Vue({
     },
     dot : function() {
       this.updateDot();
-      this.serialized = JSON.stringify({
-        dependencies : this.dependencies,
-        nodes   : this.nodes,
-        actions      : this.actions,
-      });
-    },
-    serialized : function() {
-      if (!!this.serialized) {
-        try {
-          const obj = JSON.parse(this.serialized);
-          this.dependencies = obj.dependencies;
-          this.nodes   = obj.nodes;
-          this.actions      = obj.actions || [];
-          this.updateUrl();
-          this.selectName("");
-          this.docReady = true;
-        } catch(e) {
-          this.docReady = false;
-        }
-      }
     },
     zoomLevel : debounce(function() {
       this.updateUrl();
@@ -242,7 +222,6 @@ const app = new Vue({
     actions : [],
     newName : "",
     filterString : "",
-    serialized   : "",
     nameSelected : "",
     dependencies : [],
     nodes : {},
@@ -265,6 +244,7 @@ const app = new Vue({
           from  : DEFAULT_NAME,
           to    : this.nameSelected
         }]);
+        this.selectName(DEFAULT_NAME);
       }
     },
     appendNode : function() {
@@ -277,6 +257,7 @@ const app = new Vue({
           from  : this.nameSelected,
           to : DEFAULT_NAME
         }]);
+        this.selectName(DEFAULT_NAME);
       }
     },
     newDoc : function() {

@@ -41,9 +41,6 @@
                 --><div v-for="(action, index) in actions" class="action action-backward" v-on:click="goToAction(index)"></div><!--
                 --><div v-for="(action, index) in actionsForward" class="action action-forward" v-on:click="goToActionForward(index)"></div>
             </div>
-            <div id="serialized">
-                <input v-model="serialized" v-bind:class="{ error : !docReady }"></input>
-            </div>
             <!--<textarea id="dot" v-model="dot"></textarea>-->
         </div>
         <script src="viz.js"></script>
