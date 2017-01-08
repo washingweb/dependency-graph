@@ -237,6 +237,43 @@ const app = new Vue({
     docReady     : true,
   },
   methods : {
+    gotoFrom : function() {
+      const dep = this.dependenciesComputed.filter(d => d.to == this.nameSelected)[0];
+      if (dep != undefined) {
+        this.selectName(dep.from);
+      }
+    },
+    gotoTo : function() {
+      const dep = this.dependenciesComputed.filter(d => d.from == this.nameSelected)[0];
+      if (dep != undefined) {
+        this.selectName(dep.to);
+      }
+    },
+    gotoSibling : function() {
+      if (this.siblings == undefined) {
+        const fromNames = _.uniq(this.dependenciesComputed
+                                     .filter(d => d.to == this.nameSelected)
+                                     .map(d => d.from));
+        const names = [this.nameSelected];
+        for (var from of fromNames) {
+          const toNames = this.dependenciesComputed
+                                .filter(d => d.from == from)
+                                .map(d => d.to);
+          names.push(toNames);
+        }
+        const siblings = _.uniq(_.flatten(names));
+        this.siblings = siblings;
+      }
+
+      const curIdx = this.siblings.indexOf(this.nameSelected);
+      const nextIdx = (curIdx + 1) % this.siblings.length;
+      this.selectName(this.siblings[nextIdx], false);
+    },
+    focusRename : function() {
+      setTimeout(() => {
+        $("#new-name").focus()
+      });
+    },
     prependNode : function() {
       if (!(DEFAULT_NAME in this.propertiesComputed)) {
         this.push([{
@@ -304,17 +341,20 @@ const app = new Vue({
       });
     },
     push : function(actions) {
+      console.log(actions);
       this.actions.push(actions);
       this.actionsForward = [];
     },
     back : function() {
       if (this.backable) {
         this.actionsForward.push(this.actions.pop());
+        this.selectName("");
       }
     },
     forward : function() {
       if (this.forwardable) {
         this.actions.push(this.actionsForward.pop());
+        this.selectName("");
       }
     },
     goToAction : function(index) {
@@ -376,7 +416,12 @@ const app = new Vue({
       
       this.selectName(this.newName);
     },
-    selectName : function(name) {
+    selectName : function(name, clearSiblings=true) {
+
+      if (clearSiblings) {
+        this.siblings = undefined;
+      }
+
       this.newName = name;
       this.nameSelected = name;
       if (!!name) {
@@ -387,11 +432,14 @@ const app = new Vue({
         }));
 
         setTimeout(() => {
-          $("#new-name").focus();
+          $("#focus-control").focus();
         });
         
       } else {
         this.propsSelected = [];
+        setTimeout(() => {
+          $("#focus-control-none-select").focus();
+        });
       }
     },
     updateDot : function() {
@@ -593,3 +641,11 @@ function lt(name, deps, names, depsOut) {
     }
   }
 }
+
+$("#focus-control").keydown(function(e) {
+  console.log(e.keyCode);
+});
+
+$(function() {
+  $("#focus-control-none-select").focus();
+});

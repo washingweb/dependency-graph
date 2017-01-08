@@ -13,6 +13,19 @@
                 <input placeholder="筛选器" v-model="filterString"></input>
             </div>
             <div id="props">
+                <span id="focus-control" tabindex="-1"
+                    v-on:keydown.right="appendNode"
+                    v-on:keydown.left="prependNode"
+                    v-on:keydown.space="focusRename"
+                    v-on:keydown.up="gotoFrom"
+                    v-on:keydown.down="gotoTo"
+                    v-on:keydown.9.prevent="gotoSibling"
+                    v-on:keydown.90.ctrl="back"
+                    v-on:keydown.89.ctrl="forward">
+                </span>
+                <span id="focus-control-none-select" tabindex="-1"
+                    v-on:keydown.90.ctrl="back"
+                    v-on:keydown.89.ctrl="forward"></span>
                 <button v-on:click="newDoc">清空！</button>
                 <button v-on:click="prependNode" v-if="!!nameSelected && !unnamedNode">前</button>
                 <button v-on:click="appendNode" v-if="!!nameSelected && !unnamedNode">后</button>
