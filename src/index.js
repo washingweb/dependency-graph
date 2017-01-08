@@ -80,6 +80,9 @@ const app = new Vue({
     nameConflict : function() {
       return this.newName in this.propertiesComputed;
     },
+    nameIsSame : function() {
+      return this.newName == this.nameSelected;
+    },
     nameEmpty : function() {
       return !!!this.newName;
     },

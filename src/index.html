@@ -21,7 +21,7 @@
                     <span id="rename">
                         <input id="new-name" v-model="newName" placeholder="新名字" v-on:keyup.enter="assignNewName"></input>
                         <button v-on:click="assignNewName" :disabled="nameConflict || nameEmpty">重命名</button>
-                        <span id="error-message" v-if="nameConflict">名字已存在</span>
+                        <span id="error-message" v-if="nameConflict && !nameIsSame">名字已存在</span>
                     </span>
                     <span v-for="prop in propsSelected">
                         <span>{{ prop.key }}</span>
