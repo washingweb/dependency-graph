@@ -243,6 +243,11 @@ const app = new Vue({
           type : "add",
           name : DEFAULT_NAME
         }, {
+                type : "set",
+                name : DEFAULT_NAME,
+                key   : "分类",
+                value : "",
+        }, {
           type  : "dep",
           from  : DEFAULT_NAME,
           to    : this.nameSelected
@@ -255,6 +260,11 @@ const app = new Vue({
         this.push([{
           type : "add",
           name : DEFAULT_NAME
+        }, {
+                type : "set",
+                name : DEFAULT_NAME,
+                key   : "分类",
+                value : "",
         }, {
           type  : "dep",
           from  : this.nameSelected,
