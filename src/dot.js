@@ -45,11 +45,11 @@ function toDot(dependencies, properties, nameSelected) {
         }
     });
 
-    const notPersonNames             = _.difference(onlyTos, personNames);
+    const notPersonNamesOrRepoNames  = _.difference(onlyTos, personNames.concat(repoNames));
     const notProjectNamesOrRepoNames = _.difference(onlyFroms, projectNames.concat(repoNames));
 
     const errorNames = _.uniq(
-                            [].concat(notPersonNames)
+                            [].concat(notPersonNamesOrRepoNames)
                               .concat(notProjectNamesOrRepoNames)
                               .concat(isolatedNames));
 
