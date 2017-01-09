@@ -25,11 +25,19 @@ function toDot(dependencies, properties, nameSelected) {
 
     const personNames = [];
     const projectNames = [];
+    const taskNames = [];
+
     names.forEach(n => {
-        if (properties[n]["分类"] == "人") {
-            personNames.push(n);
-        } else if (properties[n]["分类"] == "项目") {
-            projectNames.push(n);
+        switch (properties[n]["分类"]) {
+            case "人":
+                personNames.push(n);
+                break;
+            case "项目":
+                projectNames.push(n);
+                break;
+            case "任务":
+                taskNames.push(n);
+                break;
         }
     });
 
@@ -43,8 +51,8 @@ function toDot(dependencies, properties, nameSelected) {
 
     // specs
     const projectSpecs = projectNames.map(n => `"${n}" [shape=tab]`).join('\n');
-
-    const personSpecs = personNames.map(n => `"${n}" [shape=circle]`).join('\n');
+    const taskSpecs    = taskNames.map(n => `"${n}" [shape=ellipse]`).join('\n');
+    const personSpecs  = personNames.map(n => `"${n}" [shape=circle]`).join('\n');
 
     const errorSpecs = errorNames.map(n => `"${n}" [color=red]`).join('\n');
 
@@ -66,7 +74,7 @@ ${rankSpecs}
 ${nameDeclarations}
 
 ${projectSpecs}
-
+${taskSpecs}
 ${personSpecs}
 
 ${errorSpecs}
