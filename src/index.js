@@ -329,6 +329,7 @@ const app = new Vue({
     },
     updateUrl : function() {
       window.location.hash = encodeURIComponent(JSON.stringify({
+        version : "1.0",
         data : {
           dependencies : this.dependencies,
           nodes        : this.nodes,
