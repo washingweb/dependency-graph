@@ -26,6 +26,7 @@ function toDot(dependencies, properties, nameSelected) {
     const personNames = [];
     const projectNames = [];
     const taskNames = [];
+    const repoNames = [];
 
     names.forEach(n => {
         switch (properties[n]["分类"]) {
@@ -38,21 +39,25 @@ function toDot(dependencies, properties, nameSelected) {
             case "任务":
                 taskNames.push(n);
                 break;
+            case "repo":
+                repoNames.push(n);
+                break;
         }
     });
 
-    const notPersonNames  = _.difference(onlyTos, personNames);
-    const notProjectNames = _.difference(onlyFroms, projectNames);
+    const notPersonNames             = _.difference(onlyTos, personNames);
+    const notProjectNamesOrRepoNames = _.difference(onlyFroms, projectNames.concat(repoNames));
 
     const errorNames = _.uniq(
                             [].concat(notPersonNames)
-                              .concat(notProjectNames)
+                              .concat(notProjectNamesOrRepoNames)
                               .concat(isolatedNames));
 
     // specs
-    const projectSpecs = projectNames.map(n => `"${n}" [shape=tab]`).join('\n');
+    const projectSpecs = projectNames.map(n => `"${n}" [shape=tab, fontsize=30, style=filled,fillcolor=azure3]`).join('\n');
     const taskSpecs    = taskNames.map(n => `"${n}" [shape=ellipse]`).join('\n');
     const personSpecs  = personNames.map(n => `"${n}" [shape=circle]`).join('\n');
+    const repoSpecs    = repoNames.map(n => `"${n}" [shape=folder, fontsize=30, style=filled,fillcolor=azure3]`).join('\n');
 
     const errorSpecs = errorNames.map(n => `"${n}" [color=red]`).join('\n');
 
@@ -76,6 +81,7 @@ ${nameDeclarations}
 ${projectSpecs}
 ${taskSpecs}
 ${personSpecs}
+${repoSpecs}
 
 ${errorSpecs}
 
