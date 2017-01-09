@@ -42,8 +42,6 @@ const app = new Vue({
           }
         }
         return result;
-      } else {
-        return this.dependencies;
       }
     },
     propertiesComputed : function() {
@@ -70,8 +68,6 @@ const app = new Vue({
           }
         }
         return result;
-      } else {
-        return this.nodes;
       }
     },
     nodeCount : function() {
@@ -387,10 +383,6 @@ const app = new Vue({
           name : name,
         }]);
       }
-      else {
-        Vue.delete(this.nodes, name);
-        this.dependencies = this.dependencies.filter(d => (d.from != name) && (d.to != name));
-      }
 
       if (name == this.nameSelected) {
         this.selectName("");
@@ -407,13 +399,6 @@ const app = new Vue({
           name : this.nameSelected,
           new_name : this.newName,
         }]);
-      } else {
-        Vue.set(this.nodes, this.newName, this.nodes[this.nameSelected]);
-        Vue.delete(this.nodes, this.nameSelected);
-        this.dependencies = this.dependencies.map(dep => ({
-          from  : dep.from  == this.nameSelected ? this.newName : dep.from,
-          to : dep.to == this.nameSelected ? this.newName : dep.to,
-        }));
       }
       
       this.selectName(this.newName);
@@ -484,12 +469,6 @@ const app = new Vue({
               }]);
             }
           }
-          else {
-            Vue.set(that.nodes, DEFAULT_NAME, [{
-              name : '分类',
-              value : ''
-            }]);
-          }
 
           that.selectName(DEFAULT_NAME);
 
@@ -517,9 +496,6 @@ const app = new Vue({
                   to   : name,
                 }]);
               }
-              else {
-                that.dependencies = dependenciesRest;
-              }
             } else {
               if (USE_ACTION) {
                 that.push([{
@@ -527,11 +503,6 @@ const app = new Vue({
                   from : that.nameSelected,
                   to   : name,
                 }]);
-              } else {
-                that.dependencies.push({
-                  from  : that.nameSelected,
-                  to : name,
-                });
               }
             }
           }
