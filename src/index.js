@@ -177,6 +177,7 @@ const app = new Vue({
     },
     dot : function() {
       this.updateDot();
+      this.updateUrl();
     },
     zoomLevel : debounce(function() {
       this.updateUrl();
@@ -331,9 +332,9 @@ const app = new Vue({
       window.location.hash = "1.0-lz~" + LZString.compressToEncodedURIComponent(JSON.stringify({
         version : "1.0",
         data : {
-          dependencies : this.dependencies,
-          nodes        : this.nodes,
-          actions      : this.actions,
+          dependencies : this.dependenciesComputed,
+          nodes        : this.propertiesComputed,
+          actions      : [],
         },
         view : {
           zoomLevel : this.zoomLevel,
