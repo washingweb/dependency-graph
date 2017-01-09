@@ -13,6 +13,13 @@
                 <input placeholder="筛选器" v-model="filterString"></input>
             </div>
             <div id="props">
+                <!--
+                    r      : rename
+                    tab    : goto sibling
+                    ctrl-z : back
+                    ctrl-y : forward
+                    d      : deleteNode
+                -->
                 <span id="focus-control" tabindex="-1"
                     v-on:keydown.right="appendNode"
                     v-on:keydown.left="prependNode"
@@ -22,7 +29,8 @@
                     v-on:keydown.down="gotoTo"
                     v-on:keydown.9.prevent="gotoSibling"
                     v-on:keydown.90.ctrl="back"
-                    v-on:keydown.89.ctrl="forward">
+                    v-on:keydown.89.ctrl="forward"
+                    v-on:keydown.68="deleteNode(nameSelected)">
                 </span>
                 <span id="focus-control-none-select" tabindex="-1"
                     v-on:keydown.90.ctrl="back"

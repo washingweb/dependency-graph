@@ -485,9 +485,6 @@ const app = new Vue({
               }
             }
           }
-        } else if (e.shiftKey) {
-            const name = $(this)[0].innerHTML;
-            that.deleteNode(name);
         } else {
           const name = $(this)[0].innerHTML;
 
