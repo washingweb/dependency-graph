@@ -273,37 +273,21 @@ const app = new Vue({
     },
     prependNode : function() {
       if (!(DEFAULT_NAME in this.propertiesComputed)) {
-        this.push([{
-          type : "add",
-          name : DEFAULT_NAME
-        }, {
-                type : "set",
-                name : DEFAULT_NAME,
-                key   : "分类",
-                value : "",
-        }, {
+        this.push(addNewNodeAction().concat([{
           type  : "dep",
           from  : DEFAULT_NAME,
-          to    : this.nameSelected
-        }]);
+          to    : this.nameSelected,
+        }]));
         this.selectName(DEFAULT_NAME);
       }
     },
     appendNode : function() {
       if (!(DEFAULT_NAME in this.propertiesComputed)) {
-        this.push([{
-          type : "add",
-          name : DEFAULT_NAME
-        }, {
-          type : "set",
-          name : DEFAULT_NAME,
-          key   : "分类",
-          value : "",
-        }, {
+        this.push(addNewNodeAction().concat([{
           type  : "dep",
           from  : this.nameSelected,
-          to : DEFAULT_NAME
-        }]);
+          to : DEFAULT_NAME,
+        }]));
         this.selectName(DEFAULT_NAME);
       }
     },
@@ -326,7 +310,7 @@ const app = new Vue({
     },
     updateUrl : function() {
       window.location.hash = "1.0-lz_" + LZString.compressToEncodedURIComponent(JSON.stringify({
-        version : "1.0",
+        version : "1.1",
         data : {
           dependencies : this.dependenciesComputed,
           nodes        : this.propertiesComputed,
@@ -458,15 +442,7 @@ const app = new Vue({
             if (DEFAULT_NAME in that.propertiesComputed) {
             }
             else {
-              that.push([{
-                type : "add",
-                name : DEFAULT_NAME,
-              }, {
-                type : "set",
-                name : DEFAULT_NAME,
-                key   : "分类",
-                value : "",
-              }]);
+              that.push(addNewNodeAction().concat());
             }
           }
 
@@ -553,6 +529,7 @@ const app = new Vue({
   }
 });
 
+$(function() {
 if (!!window.location.hash) {
   try {
     const hashString = window.location.hash.slice(1);
@@ -582,17 +559,30 @@ if (!!window.location.hash) {
           alert("奇怪的压缩类型。。。支持raw|url|lz");
       }
     } else {
-      alert("奇怪的版本号。。。现在只支持1.0");
+      alert("奇怪的存储版本号。。。现在只支持1.0");
     }
 
     if (jsonString != undefined) {
-      const state = JSON.parse(jsonString);
-      app.nodes   = state.data.nodes;
-      app.dependencies = state.data.dependencies;
-      app.actions      = state.data.actions;
-      app.zoomLevel    = state.view.zoomLevel;
-      app.panPoint     = state.view.panPoint;
-      docReady = true;
+      var state = JSON.parse(jsonString);
+
+      if ( DATA_VERSIONS.indexOf(state.version) == -1) {
+        alert("奇怪的数据版本号");
+      }
+      else {
+        for (var update of DATA_UPDATES) {
+          if (versionLT(state.version, update.version))
+            state = update.update(state);
+          else
+            break;
+        }
+        
+        app.nodes   = state.data.nodes;
+        app.dependencies = state.data.dependencies;
+        app.actions      = state.data.actions;
+        app.zoomLevel    = state.view.zoomLevel;
+        app.panPoint     = state.view.panPoint;
+        docReady = true;
+      }
     }
   } catch (e) {
     docReady = false;
@@ -600,6 +590,8 @@ if (!!window.location.hash) {
 } else {
   app.nodes   = { [DEFAULT_NAME] : { "分类" : "" }};
 }
+})
+
 
 function debounce(func, wait, immediate) {
     var timeout;
@@ -638,6 +630,78 @@ function lt(name, deps, names, depsOut) {
       }
     }
   }
+}
+
+/*
+--------
+  1.0
+  TODO
+--------
+  1.1
+  add "链接"
+  add "说明"
+--------
+*/
+
+var DATA_VERSIONS = ["1.0", "1.1"];
+
+var DATA_UPDATES = [{
+  version : "1.1",
+  update : (state) => {
+    console.log("update to 1.1");
+    const newState = Object.assign({}, state);
+    newState.data  = Object.assign({}, state.data);
+    newState.data.nodes = Object.assign({}, state.data.nodes);
+    for (var key in state.data.nodes) {
+      newNode = Object.assign({}, state.data.nodes[key]);
+      newNode["链接"] = "";
+      newNode["说明"] = "";
+      newState.data.nodes[key] = newNode;
+    }
+    newState.version = "1.1";
+    console.log("update to 1.1 done");
+    return newState;
+  },
+}];
+
+function versionLT(v0, v1) {
+  console.log(`compare version: ${v0} ${v1}`);
+  return v0 < v1; //TODO
+}
+
+function addNewNodeAction() {
+    return [
+      {
+        type : "add",
+        name : DEFAULT_NAME
+      },
+      {
+        type : "set",
+        name : DEFAULT_NAME,
+        key   : "分类",
+        value : "",
+      },
+      {
+        type : "set",
+        name : DEFAULT_NAME,
+        key   : "链接",
+        value : "",
+      },
+      {
+        type : "set",
+        name : DEFAULT_NAME,
+        key   : "说明",
+        value : "",
+      }
+    ];
+}
+
+function newNode() {
+  return {
+    "分类" : "",
+    "链接" : "",
+    "说明" : "",
+  };
 }
 
 $("#focus-control").keydown(function(e) {
