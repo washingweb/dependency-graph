@@ -16,6 +16,10 @@ input {
     border-color: #dddddd;
 }
 
+input:focus {
+    background-color: #8ee5ee;
+}
+
 #app {
     height : 100%;
 }
@@ -36,6 +40,15 @@ div#filter input {
 div#props {
     height : 25px;
     padding : 2px;
+}
+
+#focus-control {
+    margin-right: 3px;
+    background-color: #aaaaaa;
+}
+
+#focus-control:focus {
+    background-color: #8ee5ee;
 }
 
 div#control {

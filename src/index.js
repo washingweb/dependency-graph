@@ -412,7 +412,7 @@ const app = new Vue({
       } else {
         this.propsSelected = [];
         setTimeout(() => {
-          $("#focus-control-none-select").focus();
+          $("#output").focus();
         });
       }
     },
@@ -703,5 +703,5 @@ $("#focus-control").keydown(function(e) {
 });
 
 $(function() {
-  $("#focus-control-none-select").focus();
+  $("#output").focus();
 });

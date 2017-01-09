@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="index.css">
         <script src="vue.js"></script>
     </head>
-    <body>
+    <body oncontextmenu="return false;">
         <div id="app">
             <div id="filter">
                 <input placeholder="筛选器" v-model="filterString"></input>
@@ -18,7 +18,7 @@
                     tab    : goto sibling
                     ctrl-z : back
                     ctrl-y : forward
-                    d      : deleteNode
+                    x      : deleteNode
                 -->
                 <span id="focus-control" tabindex="-1"
                     v-on:keydown.right="appendNode"
@@ -30,13 +30,8 @@
                     v-on:keydown.9.prevent="gotoSibling"
                     v-on:keydown.90.ctrl="back"
                     v-on:keydown.89.ctrl="forward"
-                    v-on:keydown.68="deleteNode(nameSelected)">
+                    v-on:keydown.88="deleteNode(nameSelected)">&nbsp;
                 </span>
-                <span id="focus-control-none-select" tabindex="-1"
-                    v-on:keydown.90.ctrl="back"
-                    v-on:keydown.89.ctrl="forward"
-                    v-on:keydown.9.prevent=""
-                    ></span>
                 <button v-on:click="newDoc">清空！</button>
                 <button v-on:click="prependNode" v-if="!!nameSelected && !unnamedNode">前</button>
                 <button v-on:click="appendNode" v-if="!!nameSelected && !unnamedNode">后</button>
@@ -60,7 +55,10 @@
                     </span>
                 </span>
             </div>
-            <div id="output"></div>
+            <div id="output" tabindex="-1"
+                    v-on:keydown.90.ctrl="back"
+                    v-on:keydown.89.ctrl="forward"
+                    v-on:keydown.9.prevent=""></div>
             <div id="control">
                 <div class="action action-origin" v-on:click="goToAction(-1)"></div><!--
                 --><div v-for="(action, index) in actions" class="action action-backward" v-on:click="goToAction(index)"></div><!--
