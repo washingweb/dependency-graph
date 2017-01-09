@@ -328,7 +328,7 @@ const app = new Vue({
       }
     },
     updateUrl : function() {
-      window.location.hash = JSON.stringify({
+      window.location.hash = encodeURIComponent(JSON.stringify({
         data : {
           dependencies : this.dependencies,
           nodes        : this.nodes,
@@ -338,7 +338,7 @@ const app = new Vue({
           zoomLevel : this.zoomLevel,
           panPoint  : this.panPoint,
         }
-      });
+      }));
     },
     push : function(actions) {
       console.log(actions);
@@ -582,7 +582,9 @@ const app = new Vue({
 
 if (!!window.location.hash) {
   try {
-    const state = JSON.parse(window.location.hash.slice(1));
+    const hashString = window.location.hash.slice(1);
+    const jsonString = hashString[0] == "%" ? decodeURIComponent(hashString) : hashString;
+    const state = JSON.parse(jsonString);
     app.nodes   = state.data.nodes;
     app.dependencies = state.data.dependencies;
     app.actions      = state.data.actions;
