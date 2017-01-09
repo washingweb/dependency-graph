@@ -325,7 +325,7 @@ const app = new Vue({
       }
     },
     updateUrl : function() {
-      window.location.hash = "1.0-lz~" + LZString.compressToEncodedURIComponent(JSON.stringify({
+      window.location.hash = "1.0-lz_" + LZString.compressToEncodedURIComponent(JSON.stringify({
         version : "1.0",
         data : {
           dependencies : this.dependenciesComputed,
@@ -557,7 +557,7 @@ if (!!window.location.hash) {
   try {
     const hashString = window.location.hash.slice(1);
     
-    var endOfHeading = hashString.indexOf("~");
+    var endOfHeading = hashString.indexOf("_");
     var header = hashString.slice(0, endOfHeading);
     var body = hashString.slice(endOfHeading+1)
 
