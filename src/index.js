@@ -234,6 +234,9 @@ const app = new Vue({
     docReady     : true,
   },
   methods : {
+    propIsLink : function(key, value) {
+      return key == "链接" && !!value;
+    },
     gotoFrom : function() {
       const dep = this.dependenciesComputed.filter(d => d.to == this.nameSelected)[0];
       if (dep != undefined) {

@@ -38,7 +38,8 @@
                         <span id="error-message" v-if="nameConflict && !nameIsSame">名字已存在</span>
                     </span>
                     <span v-for="prop in propsSelected">
-                        <span>{{ prop.key }}</span>
+                        <a v-if="propIsLink(prop.key, prop.value)" v-bind:href="prop.value">{{ prop.key }}</a>
+                        <span v-else>{{ prop.key }}</span>
                         <span><input v-model="prop.value" v-on:keyup.enter="updateProps"></input></span>
                     </span>
                     <button v-on:click="updateProps" :disabled="!propsAreNew">更新</button>
