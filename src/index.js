@@ -437,10 +437,8 @@ const app = new Vue({
       const svg = graph.firstChild;
       $(svg).addClass('full');
 
-      $(svg).on("click", function(e) {
-        if (e.shiftKey) {
+      $(svg).dblclick(function(e) {
 
-          // action
           if (USE_ACTION) {
             if (DEFAULT_NAME in that.propertiesComputed) {
             }
@@ -450,10 +448,6 @@ const app = new Vue({
           }
 
           that.selectName(DEFAULT_NAME);
-
-        } else {
-          // that.selectName("");
-        }
       });
 
       const texts = $(svg).find("text");

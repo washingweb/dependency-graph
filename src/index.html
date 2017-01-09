@@ -34,7 +34,9 @@
                 </span>
                 <span id="focus-control-none-select" tabindex="-1"
                     v-on:keydown.90.ctrl="back"
-                    v-on:keydown.89.ctrl="forward"></span>
+                    v-on:keydown.89.ctrl="forward"
+                    v-on:keydown.9.prevent=""
+                    ></span>
                 <button v-on:click="newDoc">清空！</button>
                 <button v-on:click="prependNode" v-if="!!nameSelected && !unnamedNode">前</button>
                 <button v-on:click="appendNode" v-if="!!nameSelected && !unnamedNode">后</button>
