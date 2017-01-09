@@ -328,7 +328,7 @@ const app = new Vue({
       }
     },
     updateUrl : function() {
-      window.location.hash = encodeURIComponent(JSON.stringify({
+      window.location.hash = "1.0-lz~" + LZString.compressToEncodedURIComponent(JSON.stringify({
         version : "1.0",
         data : {
           dependencies : this.dependencies,
@@ -584,14 +584,44 @@ const app = new Vue({
 if (!!window.location.hash) {
   try {
     const hashString = window.location.hash.slice(1);
-    const jsonString = hashString[0] == "%" ? decodeURIComponent(hashString) : hashString;
-    const state = JSON.parse(jsonString);
-    app.nodes   = state.data.nodes;
-    app.dependencies = state.data.dependencies;
-    app.actions      = state.data.actions;
-    app.zoomLevel    = state.view.zoomLevel;
-    app.panPoint     = state.view.panPoint;
-    docReady = true;
+    
+    var endOfHeading = hashString.indexOf("~");
+    var header = hashString.slice(0, endOfHeading);
+    var body = hashString.slice(endOfHeading+1)
+
+    version = header.split("-")[0];
+
+    var jsonString;
+
+    if (version == "1.0") {
+      compressMethod = header.split("-")[1];
+
+      switch (compressMethod) {
+        case "raw":
+          jsonString = body;
+        break;
+        case "url":
+          jsonString = decodeURIComponent(body);
+          break;
+        case "lz":
+          jsonString = LZString.decompressFromEncodedURIComponent(body);
+          break;
+        default:
+          alert("奇怪的压缩类型。。。支持raw|url|lz");
+      }
+    } else {
+      alert("奇怪的版本号。。。现在只支持1.0");
+    }
+
+    if (jsonString != undefined) {
+      const state = JSON.parse(jsonString);
+      app.nodes   = state.data.nodes;
+      app.dependencies = state.data.dependencies;
+      app.actions      = state.data.actions;
+      app.zoomLevel    = state.view.zoomLevel;
+      app.panPoint     = state.view.panPoint;
+      docReady = true;
+    }
   } catch (e) {
     docReady = false;
   }
