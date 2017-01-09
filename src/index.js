@@ -171,6 +171,9 @@ const app = new Vue({
     nameSelected : function() {
       this.updateDot();
     },
+    actions : function() {
+      this.updateUrl();
+    },
     dot : function() {
       this.updateDot();
       this.updateUrl();
@@ -312,6 +315,7 @@ const app = new Vue({
       }
     },
     updateUrl : function() {
+      console.log("commited to url");
       window.location.hash = "1.0-lz_" + LZString.compressToEncodedURIComponent(JSON.stringify({
         version : "1.1",
         data : {
@@ -356,7 +360,12 @@ const app = new Vue({
     },
     updateProps : function() {
       const actions = this.updatePropsActions;
-      this.push(actions);
+      if (actions.length > 0)
+        this.push(actions);
+
+      this.assignNewName();
+
+      $("#focus-control").focus();  
     },
     deleteNodeSelected : function() {
       this.deleteNode(this.nameSelected);

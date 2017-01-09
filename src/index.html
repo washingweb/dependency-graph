@@ -15,7 +15,7 @@
             <div id="props">
                 <!--
                     r      : rename
-                    tab    : goto sibling
+                    tab    : goto rename
                     ctrl-z : back
                     ctrl-y : forward
                     x      : deleteNode
@@ -23,23 +23,20 @@
                 <span id="focus-control" tabindex="-1"
                     v-on:keydown.right="appendNode"
                     v-on:keydown.left="prependNode"
-                    v-on:keydown.space="focusRename"
+                    v-on:keydown.9.prevent="focusRename"
                     v-on:keydown.82="focusRename"
                     v-on:keydown.up="gotoFrom"
                     v-on:keydown.down="gotoTo"
-                    v-on:keydown.9.prevent="gotoSibling"
+                    v-on:keydown.space="gotoSibling"
                     v-on:keydown.90.ctrl="back"
                     v-on:keydown.89.ctrl="forward"
                     v-on:keydown.88="deleteNode(nameSelected)">&nbsp;
                 </span>
                 <button v-on:click="newDoc">清空！</button>
-                <button v-on:click="prependNode" v-if="!!nameSelected && !unnamedNode">前</button>
-                <button v-on:click="appendNode" v-if="!!nameSelected && !unnamedNode">后</button>
                 <span class="hori-spliter">&nbsp;</span>
                 <span v-if="!!nameSelected">
                     <span id="rename">
-                        <input id="new-name" v-model="newName" placeholder="新名字" v-on:keyup.enter="assignNewName"></input>
-                        <button v-on:click="assignNewName" :disabled="nameConflict || nameEmpty">重命名</button>
+                        <input id="new-name" v-model="newName" placeholder="新名字" v-on:keyup.enter="updateProps"></input>
                         <span id="error-message" v-if="nameConflict && !nameIsSame">名字已存在</span>
                     </span>
                     <span v-for="prop in propsSelected">
@@ -47,7 +44,6 @@
                         <span v-else>{{ prop.key }}</span>
                         <span><input v-model="prop.value" v-on:keyup.enter="updateProps"></input></span>
                     </span>
-                    <button v-on:click="updateProps" :disabled="!propsAreNew">更新</button>
                 </span>
                 <span v-else>
                     <span>
