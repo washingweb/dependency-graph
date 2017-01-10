@@ -302,9 +302,11 @@ const app = new Vue({
       const win = window.open(url, '_blank');
       win.focus();
     },
+    shareDoc : function() {
+      prompt('Press Ctrl + C, then Enter to copy to clipboard', window.location.href);
+    },
     updateUrl : function() {
-      console.log("commited to url");
-      window.location.hash = "1.0-lz_" + LZString.compressToEncodedURIComponent(JSON.stringify({
+      window.location.hash = LZString.compressToEncodedURIComponent(JSON.stringify({
         version : "1.1",
         data : {
           dependencies : this.dependenciesComputed,
@@ -523,34 +525,21 @@ const app = new Vue({
 $(function() {
 if (!!window.location.hash) {
   try {
-    const hashString = window.location.hash.slice(1);
-    
-    var endOfHeading = hashString.indexOf("_");
-    var header = hashString.slice(0, endOfHeading);
-    var body = hashString.slice(endOfHeading+1)
 
-    version = header.split("-")[0];
+    const format = getParameterByName("format") || "raw";
+    const hashString = window.location.hash.slice(1);
 
     var jsonString;
-
-    if (version == "1.0") {
-      compressMethod = header.split("-")[1];
-
-      switch (compressMethod) {
-        case "raw":
-          jsonString = body;
+    switch (format) {
+      case "raw":
+        jsonString = hashString;
         break;
-        case "url":
-          jsonString = decodeURIComponent(body);
-          break;
-        case "lz":
-          jsonString = LZString.decompressFromEncodedURIComponent(body);
-          break;
-        default:
-          alert("奇怪的压缩类型。。。支持raw|url|lz");
-      }
-    } else {
-      alert("奇怪的存储版本号。。。现在只支持1.0");
+      case "url":
+        jsonString = decodeURIComponent(hashString);
+        break;
+      case "lz":
+        jsonString = LZString.decompressFromEncodedURIComponent(hashString);
+        break;
     }
 
     if (jsonString != undefined) {
@@ -702,3 +691,15 @@ $("#focus-control").keydown(function(e) {
 $(function() {
   $("#output").focus();
 });
+
+function getParameterByName(name, url) {
+    if (!url) {
+      url = window.location.href;
+    }
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
