@@ -237,6 +237,21 @@ const app = new Vue({
     docReady     : true,
   },
   methods : {
+    addFilter  : function(t) {
+      if (!!!t) {
+        this.filterString = "";
+      }
+      else {
+        switch (t) {
+          case ">":
+            this.filterString = `> ${this.nameSelected}`;
+            break;
+          case "<":
+            this.filterString = `< ${this.nameSelected}`;
+            break;
+        }
+      }
+    },
     propIsLink : function(key, value) {
       return key == "链接" && !!value;
     },
@@ -684,8 +699,13 @@ function newNode() {
   };
 }
 
-$("#focus-control").keydown(function(e) {
+$(document).keydown(function(e) {
   console.log(e.keyCode);
+  switch (e.keyCode) {
+    case 27:
+      app.addFilter()
+      break;
+  }
 });
 
 $(function() {

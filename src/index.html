@@ -33,7 +33,10 @@
                     v-on:keydown.up="gotoSibling(-1)"
                     v-on:keydown.90.ctrl="back"
                     v-on:keydown.89.ctrl="forward"
-                    v-on:keydown.88="deleteNode(nameSelected)">&nbsp;
+                    v-on:keydown.88="deleteNode(nameSelected)"
+                    v-on:keydown.188="addFilter('<')"
+                    v-on:keydown.190="addFilter('>')"
+                >&nbsp;
                 </span>
                 <button v-on:click="newDoc">新建文档</button>
                 <button v-on:click="shareDoc">分享</button>
