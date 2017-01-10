@@ -5,6 +5,8 @@ const DEFAULT_NAME = "**未命名**";
 
 const USE_ACTION = true;
 
+const DEFAULT_KEYS = ["分类", "链接", "说明", "存档"];
+
 const app = new Vue({
   el: '#app',
   computed : {
@@ -88,7 +90,7 @@ const app = new Vue({
       return !!!this.newName;
     },
     dot : function() {
-      return toDot(this.dependenciesFilterred.filter(d => d.from != "" && d.to != ""), this.propertiesFilterred, this.nameSelected);
+      return toDot(this.dependenciesFilterred.filter(d => d.from != "" && d.to != ""), this.propertiesDefaulted, this.nameSelected);
     },
     filterList : function() {
       return this.filterStringList.map(filterString => {
@@ -148,6 +150,18 @@ const app = new Vue({
         }
         return properties;
       }
+    },
+    propertiesDefaulted : function() {
+      const newProperties = Object.assign({}, this.propertiesFilterred);
+      for (var key in this.propertiesFilterred) {
+        newProperties[key] = Object.assign({}, this.propertiesFilterred[key]);
+        for (var defaultKey of DEFAULT_KEYS) {
+          if (newProperties[key][defaultKey] == undefined) {
+            newProperties[key][defaultKey] = "";
+          }
+        }
+      }
+      return newProperties;
     },
     updatePropsActions : function() {
 
@@ -454,7 +468,7 @@ const app = new Vue({
       this.newName = name;
       this.nameSelected = name;
       if (!!name) {
-        const prop = this.propertiesComputed[name];
+        const prop = this.propertiesDefaulted[name];
         this.propsSelected = Object.keys(prop).map(k => ({
           key  : k,
           value : prop[k],
