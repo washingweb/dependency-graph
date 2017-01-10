@@ -252,7 +252,7 @@ const app = new Vue({
         this.selectName(dep.to);
       }
     },
-    gotoSibling : function() {
+    gotoSibling : function(step) {
       if (this.siblings == undefined) {
         const fromNames = _.uniq(this.dependenciesComputed
                                      .filter(d => d.to == this.nameSelected)
@@ -269,7 +269,7 @@ const app = new Vue({
       }
 
       const curIdx = this.siblings.indexOf(this.nameSelected);
-      const nextIdx = (curIdx + 1) % this.siblings.length;
+      var nextIdx = (curIdx + step + this.siblings.length) % this.siblings.length;
       this.selectName(this.siblings[nextIdx], false);
     },
     focusRename : function() {

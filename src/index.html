@@ -14,6 +14,8 @@
             </div>
             <div id="props">
                 <!--
+                    a      : appendNode
+                    p      : prependNode
                     r      : rename
                     tab    : goto rename
                     ctrl-z : back
@@ -21,13 +23,14 @@
                     x      : deleteNode
                 -->
                 <span id="focus-control" tabindex="-1"
-                    v-on:keydown.right="appendNode"
-                    v-on:keydown.left="prependNode"
+                    v-on:keydown.65="appendNode"
+                    v-on:keydown.80="prependNode"
                     v-on:keydown.9.prevent="focusRename"
                     v-on:keydown.82="focusRename"
-                    v-on:keydown.up="gotoFrom"
-                    v-on:keydown.down="gotoTo"
-                    v-on:keydown.space="gotoSibling"
+                    v-on:keydown.left="gotoFrom"
+                    v-on:keydown.right="gotoTo"
+                    v-on:keydown.down="gotoSibling(1)"
+                    v-on:keydown.up="gotoSibling(-1)"
                     v-on:keydown.90.ctrl="back"
                     v-on:keydown.89.ctrl="forward"
                     v-on:keydown.88="deleteNode(nameSelected)">&nbsp;
