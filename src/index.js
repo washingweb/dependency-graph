@@ -125,8 +125,6 @@ const app = new Vue({
         }
       }
 
-      console.log(namesOut);
-
       return {
         names : namesOut,
         deps  : depsOut,
@@ -379,7 +377,6 @@ const app = new Vue({
       }));
     },
     push : function(actions) {
-      console.log(actions);
       this.actions.push(actions);
       this.actionsForward = [];
     },
@@ -613,8 +610,6 @@ if (!!window.location.hash) {
             state = update.update(state);
         }
         
-        console.log(state);
-
         app.nodes   = state.data.nodes;
         app.dependencies = state.data.dependencies;
         app.actions      = state.data.actions;
