@@ -40,7 +40,7 @@ div#filter .filter-item {
 }
 
 div#filter input {
-    width : calc(100% - 30px);
+    width : calc(100% - 40px);
 }
 
 div#filter .filter-add-button {
