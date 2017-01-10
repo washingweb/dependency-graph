@@ -67,6 +67,7 @@
                 --><div v-for="(action, index) in actions" class="action action-backward" v-on:click="goToAction(index)"></div><!--
                 --><div v-for="(action, index) in actionsForward" class="action action-forward" v-on:click="goToActionForward(index)"></div>
             </div>
+            <div id="help">{{ helpString }}</div>
             <!--<textarea id="dot" v-model="dot"></textarea>-->
         </div>
         <script src="viz.js"></script>

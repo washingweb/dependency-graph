@@ -111,7 +111,7 @@ textarea#dot {
 }
 
 div#output {
-    height : calc(100% - 90px);
+    height : calc(100% - 105px);
     background-color : white;
     border : solid 1px #dddddd;
 }

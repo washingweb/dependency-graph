@@ -8,6 +8,11 @@ const USE_ACTION = true;
 const app = new Vue({
   el: '#app',
   computed : {
+    helpString : function() {
+      const globalString   = `Esc: 全看（清空filter）, db-click: 加节点`;
+      const selectedString = this.selectedIsFocused ? `TAB: 编辑名字, x: 删, a: 加右, p: 加左, >:只看右, <:只看左, left/right: 选左右, up/down: 选上下， ctrl-z: 回退, ctrl-y: 重做` : "";
+      return [globalString, selectedString].join(" | ");
+    },
     unnamedNode : function() {
       return DEFAULT_NAME in this.propertiesComputed;
     },
@@ -235,6 +240,7 @@ const app = new Vue({
     },
     propsSelected: [],
     docReady     : true,
+    selectedIsFocused : false,
   },
   methods : {
     addFilter  : function(t) {
@@ -370,7 +376,7 @@ const app = new Vue({
 
       this.assignNewName();
 
-      $("#focus-control").focus();  
+      $("#focus-control").focus();
     },
     deleteNodeSelected : function() {
       this.deleteNode(this.nameSelected);
@@ -710,6 +716,14 @@ $(document).keydown(function(e) {
 
 $(function() {
   $("#output").focus();
+});
+
+$("#focus-control").focus(function() {
+  app.selectedIsFocused = true;
+});
+
+$("#focus-control").focusout(function() {
+  app.selectedIsFocused = false;
 });
 
 function getParameterByName(name, url) {
