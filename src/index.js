@@ -298,7 +298,7 @@ const app = new Vue({
       }
     },
     newDoc : function() {
-      const url = window.location.href.split('?')[0];
+      const url = window.location.href.split('#')[0];
       const win = window.open(url, '_blank');
       win.focus();
     },
