@@ -91,7 +91,6 @@ const app = new Vue({
       return toDot(this.dependenciesFilterred.filter(d => d.from != "" && d.to != ""), this.propertiesFilterred, this.nameSelected);
     },
     filterList : function() {
-      console.log(this.filterStringList);
       return this.filterStringList.map(filterString => {
         return this.filterStringToFilter(filterString);
       });
@@ -366,13 +365,14 @@ const app = new Vue({
     },
     updateUrl : function() {
       window.location.hash = LZString.compressToEncodedURIComponent(JSON.stringify({
-        version : "1.1",
+        version : "1.2",
         data : {
           dependencies : this.dependenciesComputed,
           nodes        : this.propertiesComputed,
           actions      : [],
         },
         view : {
+          filters   : this.filterStringList,
           zoomLevel : this.zoomLevel,
           panPoint  : this.panPoint,
         }
@@ -611,15 +611,16 @@ if (!!window.location.hash) {
         for (var update of DATA_UPDATES) {
           if (versionLT(state.version, update.version))
             state = update.update(state);
-          else
-            break;
         }
         
+        console.log(state);
+
         app.nodes   = state.data.nodes;
         app.dependencies = state.data.dependencies;
         app.actions      = state.data.actions;
         app.zoomLevel    = state.view.zoomLevel;
         app.panPoint     = state.view.panPoint;
+        app.filterStringList = state.view.filters;
         docReady = true;
       }
     }
@@ -682,7 +683,7 @@ function lt(name, deps, names, depsOut) {
 --------
 */
 
-var DATA_VERSIONS = ["1.0", "1.1"];
+var DATA_VERSIONS = ["1.0", "1.1", "1.2"];
 
 var DATA_UPDATES = [{
   version : "1.1",
@@ -699,6 +700,18 @@ var DATA_UPDATES = [{
     }
     newState.version = "1.1";
     console.log("update to 1.1 done");
+    return newState;
+  },
+}, {
+  version : "1.2",
+  update : (state) => {
+    console.log("update to 1.2");
+    const newState = Object.assign({}, state);
+    newState.data  = Object.assign({}, state.data);
+    newState.view  = Object.assign({}, state.view);
+    newState.view.filters = [""];
+    newState.version = "1.2";
+    console.log("update to 1.2 done");
     return newState;
   },
 }];
