@@ -623,7 +623,7 @@ if (!!window.location.hash) {
     docReady = false;
   }
 } else {
-  app.nodes   = { [DEFAULT_NAME] : { "分类" : "" }};
+  app.nodes   = { [DEFAULT_NAME] : newNode()};
 }
 })
 
