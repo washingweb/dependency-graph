@@ -30,11 +30,22 @@ input:focus {
 
 div#filter {
     height : 25px;
+    display : flex;
+    flex-direction: row;
+}
+
+div#filter .filter-item {
+    padding : 2px;
+    flex : 1;
 }
 
 div#filter input {
-    width : 100%;
+    width : calc(100% - 30px);
+}
+
+div#filter .filter-add-button {
     padding : 2px;
+    flex : 20px 0 0;
 }
 
 div#props {

@@ -90,36 +90,52 @@ const app = new Vue({
     dot : function() {
       return toDot(this.dependenciesFilterred.filter(d => d.from != "" && d.to != ""), this.propertiesFilterred, this.nameSelected);
     },
-    filter : function() {
-        const filter = this.filterString;
-        const parts = filter.trim().split(/\s+/);
-        const cmd    = parts[0];
-        const name   = parts[1];
-        return {
-          cmd,
-          name,
-        };
+    filterList : function() {
+      console.log(this.filterStringList);
+      return this.filterStringList.map(filterString => {
+        return this.filterStringToFilter(filterString);
+      });
     },
     namesFilterred : function() {
-      const cmd = this.filter.cmd;
-      const name = this.filter.name;
-      if (cmd == ">" && !!name) {
-        const names = {};
-        const deps = [];
-        gt(name, this.dependenciesComputed, names, deps);
-        return { names, deps };
-      } else if (cmd == "<" && !!name) {
-        const names = {};
-        const deps = [];
-        lt(name, this.dependenciesComputed, names, deps);
-        return { names, deps };
-      } else {
-        return undefined;
+
+      var depsIn = this.dependenciesComputed;
+
+      var namesOut = Object.keys(this.propertiesComputed).reduce((p, c) => {
+        p[c] = true;
+        return p;
+      }, {});
+      var depsOut  = this.dependenciesComputed;
+
+      for (var filter of this.filterList) {
+
+        const cmd  = filter.cmd;
+        const name = filter.name;
+
+        if (cmd == ">" && !!name) {
+          namesOut = {};
+          depsOut = [];
+          gt(name, depsIn, namesOut, depsOut);
+          depsIn = depsOut;
+        } else if (cmd == "<" && !!name) {
+          namesOut = {};
+          depsOut = [];
+          lt(name, depsIn, namesOut, depsOut);
+          depsIn = depsOut;
+        } else {
+          // return undefined;
+        }
+      }
+
+      console.log(namesOut);
+
+      return {
+        names : namesOut,
+        deps  : depsOut,
       }
     },
     dependenciesFilterred : function() {
       if (this.namesFilterred == undefined)
-        return this.dependenciesComputed
+        return this.dependenciesComputed;
       else
         return this.namesFilterred.deps;
     },
@@ -190,7 +206,7 @@ const app = new Vue({
       this.updateUrl();
     }, 500),
   },
-  data: {
+  data : {
     /*
       {
         type : "add",
@@ -229,7 +245,7 @@ const app = new Vue({
     actionsForward : [],
     actions : [],
     newName : "",
-    filterString : "",
+    filterStringList : [""],
     nameSelected : "",
     dependencies : [],
     nodes : {},
@@ -243,20 +259,42 @@ const app = new Vue({
     selectedIsFocused : false,
   },
   methods : {
-    addFilter  : function(t) {
-      if (!!!t) {
-        this.filterString = "";
+    filterStringToFilter : function(filterString) {
+      const parts = filterString.trim().split(/\s+/);
+      const cmd    = parts[0];
+      const name   = parts[1];
+      return {
+        cmd,
+        name,
+      };
+    },
+    delFilter   : function(index) {
+      this.filterStringList.splice(index, 1);
+      if (this.filterStringList.length == 0) {
+        this.filterStringList.push("");
       }
-      else {
-        switch (t) {
-          case ">":
-            this.filterString = `> ${this.nameSelected}`;
-            break;
-          case "<":
-            this.filterString = `< ${this.nameSelected}`;
-            break;
+    },
+    pushFilter  : function(t) {
+      if (this.filterStringList.length == 1 && !!!this.filterStringList[0]) {
+        this.filterStringList.pop();
+      }
+      switch (t) {
+        case "":
+          this.filterStringList.push("");
+          break;
+        case ">":
+          this.filterStringList.push(`> ${this.nameSelected}`);
+          break;
+        case "<":
+          this.filterStringList.push(`< ${this.nameSelected}`);
+          break;
+      }
+    },
+    popFilter : function() {
+        this.filterStringList.pop();
+        if (this.filterStringList.length == 0) {
+          this.filterStringList.push("");
         }
-      }
     },
     propIsLink : function(key, value) {
       return key == "链接" && !!value;
@@ -709,7 +747,7 @@ $(document).keydown(function(e) {
   console.log(e.keyCode);
   switch (e.keyCode) {
     case 27:
-      app.addFilter()
+      app.popFilter()
       break;
   }
 });

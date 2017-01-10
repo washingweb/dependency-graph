@@ -10,7 +10,13 @@
     <body oncontextmenu="return false;">
         <div id="app">
             <div id="filter">
-                <input placeholder="筛选器" v-model="filterString"></input>
+                <span class="filter-item" v-for="(filterString, index) in filterStringList">
+                    <input placeholder="筛选器" v-model="filterStringList[index]"></input>
+                    <button v-on:click="delFilter(index)">-</button>
+                </span>
+                <span class="filter-add-button">
+                    <button v-on:click="pushFilter('')">+</button>
+                </span>
             </div>
             <div id="props">
                 <!--
@@ -34,8 +40,8 @@
                     v-on:keydown.90.ctrl="back"
                     v-on:keydown.89.ctrl="forward"
                     v-on:keydown.88="deleteNode(nameSelected)"
-                    v-on:keydown.188="addFilter('<')"
-                    v-on:keydown.190="addFilter('>')"
+                    v-on:keydown.188="pushFilter('<')"
+                    v-on:keydown.190="pushFilter('>')"
                 >&nbsp;
                 </span>
                 <button v-on:click="newDoc">新建文档</button>
