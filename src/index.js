@@ -376,6 +376,10 @@ const app = new Vue({
       prompt('Press Ctrl + C, then Enter to copy to clipboard', window.location.href);
     },
     updateUrl : function() {
+      const format = getParameterByName("format");
+      if (format != "lz") {
+        document.location.search = "?format=lz";
+      }
       window.location.hash = LZString.compressToEncodedURIComponent(JSON.stringify({
         version : "1.2",
         data : {
