@@ -10,6 +10,29 @@ const DEFAULT_KEYS = ["分类", "链接", "说明", "存档"];
 const app = new Vue({
   el: '#app',
   computed : {
+    propsSelected : function() {
+      if (!!this.nameSelected) {
+        const prop = this.propertiesDefaulted[this.nameSelected];
+
+        return Object.keys(prop).map(k => ({
+          key  : k,
+          value : prop[k],
+        }));
+      } else {
+        return [];
+      }
+    },
+    defaultKeysString : {
+      get : function() {
+        return this.defaultKeys.join(",");
+      },
+      set : function(newValue) {
+        this.defaultKeys = newValue
+                              .trim()
+                              .split(/,|，/)
+                              .map(k => k.trim());
+      }
+    },
     helpString : function() {
       const globalString   = `Esc: 全看（清空filter）, db-click: 加节点`;
       const selectedString = this.selectedIsFocused ? `TAB: 编辑名字, x: 删, a: 加右, p: 加左, >:只看右, <:只看左, left/right: 选左右, up/down: 选上下， ctrl-z: 回退, ctrl-y: 重做` : "";
@@ -155,7 +178,7 @@ const app = new Vue({
       const newProperties = Object.assign({}, this.propertiesFilterred);
       for (var key in this.propertiesFilterred) {
         newProperties[key] = Object.assign({}, this.propertiesFilterred[key]);
-        for (var defaultKey of DEFAULT_KEYS) {
+        for (var defaultKey of app.defaultKeys) {
           if (newProperties[key][defaultKey] == undefined) {
             newProperties[key][defaultKey] = "";
           }
@@ -200,6 +223,9 @@ const app = new Vue({
     }
   },
   watch : {
+    defaultKeys : function() {
+      this.updateUrl();
+    },
     nameSelected : function() {
       this.updateDot();
     },
@@ -253,6 +279,7 @@ const app = new Vue({
         to   : <string>,
       }
     */
+    defaultKeys : [],
     actionsForward : [],
     actions : [],
     newName : "",
@@ -381,11 +408,14 @@ const app = new Vue({
         document.location.search = "?format=lz";
       }
       window.location.hash = LZString.compressToEncodedURIComponent(JSON.stringify({
-        version : "1.2",
+        version : "1.3",
         data : {
           dependencies : this.dependenciesComputed,
           nodes        : this.propertiesComputed,
           actions      : [],
+        },
+        config : {
+          defaultKeys : this.defaultKeys.filter(k => !!k),
         },
         view : {
           filters   : this.filterStringList,
@@ -472,18 +502,10 @@ const app = new Vue({
       this.newName = name;
       this.nameSelected = name;
       if (!!name) {
-        const prop = this.propertiesDefaulted[name];
-        this.propsSelected = Object.keys(prop).map(k => ({
-          key  : k,
-          value : prop[k],
-        }));
-
         setTimeout(() => {
           $("#focus-control").focus();
         });
-        
       } else {
-        this.propsSelected = [];
         setTimeout(() => {
           $("#output").focus();
         });
@@ -634,6 +656,7 @@ if (!!window.location.hash) {
         app.zoomLevel    = state.view.zoomLevel;
         app.panPoint     = state.view.panPoint;
         app.filterStringList = state.view.filters;
+        app.defaultKeys  = state.config.defaultKeys;
         docReady = true;
       }
     }
@@ -696,7 +719,7 @@ function lt(name, deps, names, depsOut) {
 --------
 */
 
-var DATA_VERSIONS = ["1.0", "1.1", "1.2"];
+var DATA_VERSIONS = ["1.0", "1.1", "1.2", "1.3"];
 
 var DATA_UPDATES = [{
   version : "1.1",
@@ -727,6 +750,18 @@ var DATA_UPDATES = [{
     console.log("update to 1.2 done");
     return newState;
   },
+}, {
+  version : "1.3",
+  update : (state) => {
+    console.log("update to 1.3");
+    const newState = Object.assign({}, state);
+    newState.config  = {
+      defaultKeys : [],
+    };
+    newState.version = "1.3";
+    console.log("update to 1.3 done");
+    return newState;
+  },
 }];
 
 function versionLT(v0, v1) {
@@ -740,33 +775,11 @@ function addNewNodeAction() {
         type : "add",
         name : DEFAULT_NAME
       },
-      {
-        type : "set",
-        name : DEFAULT_NAME,
-        key   : "分类",
-        value : "",
-      },
-      {
-        type : "set",
-        name : DEFAULT_NAME,
-        key   : "链接",
-        value : "",
-      },
-      {
-        type : "set",
-        name : DEFAULT_NAME,
-        key   : "说明",
-        value : "",
-      }
     ];
 }
 
 function newNode() {
-  return {
-    "分类" : "",
-    "链接" : "",
-    "说明" : "",
-  };
+  return {};
 }
 
 $(document).keydown(function(e) {

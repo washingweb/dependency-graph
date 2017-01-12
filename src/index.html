@@ -18,6 +18,9 @@
                     <button v-on:click="pushFilter('')">+</button>
                 </span>
             </div>
+            <div id="keys">
+                <span>默认属性名：</span><input type="text" v-model="defaultKeysString"></input>
+            </div>
             <div id="props">
                 <!--
                     a      : appendNode

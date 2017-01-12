@@ -48,6 +48,10 @@ div#filter .filter-add-button {
     flex : 20px 0 0;
 }
 
+div#keys {
+    height : 25px;
+}
+
 div#props {
     height : 25px;
     padding : 2px;
@@ -122,7 +126,7 @@ textarea#dot {
 }
 
 div#output {
-    height : calc(100% - 105px);
+    height : calc(100% - 130px);
     background-color : white;
     border : solid 1px #dddddd;
 }
